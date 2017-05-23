@@ -11,4 +11,6 @@ class SubscriptionTest(TestCase):
             date_of_birth='1996-08-12',
             city='Porto Alegre',
             team='Sprint Final',
+            shirt_size='P',
+            modality='5km',
         )
