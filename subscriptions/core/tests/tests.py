@@ -1,6 +1,9 @@
 import os
 from django.test import TestCase
 from subscriptions.core.models import Subscription
+from subscriptions.core.helpers import SubscriptionImporter
+
+TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
 
 class SubscriptionTest(TestCase):
     def test_create(self):
@@ -40,6 +43,7 @@ class ImportViewTest(TestCase):
             ('<form', 1),
             ('<input', 3),
             ('type="submit"', 1),
+            ('enctype="multipart/form-data"', 1)
         )
 
         for tag,count in tags:
@@ -51,9 +55,28 @@ class ImportViewTest(TestCase):
 
 class ImportViewPostTest(TestCase):
     def setUp(self):
-        self.TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
-        with open(self.TESTS_PATH + '/test.csv') as file:
+        with open(TESTS_PATH + '/test.csv') as file:
             self.response = self.client.post('/import/', {'file': file})
 
     def test_post(self):
         self.assertEqual(200, self.response.status_code)
+
+    def test_template(self):
+        self.assertTemplateUsed(self.response, 'import_ok.html')
+
+    def test_should_create_subscription(self):
+        self.assertTrue(Subscription.objects.exists())
+
+class SubscriptionImporterHelperTest(TestCase):
+    def setUp(self):
+        filepath = TESTS_PATH + '/test.csv'
+        self.importer = SubscriptionImporter(filepath)
+
+    def test_new(self):
+        self.assertIsInstance(self.importer, SubscriptionImporter)
+
+    def test_import(self):
+        self.importer.save()
+        self.assertTrue(Subscription.objects.exists())
+
+
