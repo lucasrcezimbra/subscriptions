@@ -1,3 +1,6 @@
+import os
+import pandas as pd
+from datetime import datetime
 from django.db import models
 
 class Subscription(models.Model):
@@ -20,3 +23,27 @@ class Subscription(models.Model):
 
 class Import(models.Model):
     file = models.FileField()
+
+    def save(self, *args, **kwargs):
+        super(Import, self).save(*args, **kwargs)
+        self._import()
+
+    def _import(self):
+        csv = pd.DataFrame.from_csv(self.file.name, sep=';')
+        records = csv.to_dict('records')
+        model_instances = [Subscription(
+            name=record['*Nome Completo'],
+            email=record['E-mail'],
+            name_for_bib_number=record['Nome para Numero de Peito'],
+            gender=record['*Sexo (M ou F)'],
+            date_of_birth=datetime.strptime(
+                record['*Data Nascimento (dd/mm/aaaa)'],
+                '%d/%m/%Y').date(),
+            city=record['Cidade'],
+            team=record['Equipe'],
+            shirt_size=record['Tamanho da Camiseta'],
+            modality=record['Modalidade'],
+            import_t=self,
+        ) for record in records]
+
+        Subscription.objects.bulk_create(model_instances)

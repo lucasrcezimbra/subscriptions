@@ -132,3 +132,7 @@ class ImportModelTest(TestCase):
 
         self.import_.delete()
         self.assertTrue(not Subscription.objects.exists())
+
+    def test_subscription_has_import_id(self):
+        subscription = Subscription.objects.first()
+        self.assertEqual(self.import_.id, subscription.import_t.id)
