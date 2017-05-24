@@ -9,6 +9,7 @@ CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
 class ImportModelTest(TestCase):
     def setUp(self):
         self.import_ = Import.objects.create(
+            origin='Sprint Final',
             file=CSV_PATH
         )
 
@@ -58,3 +59,6 @@ class ImportModelTest(TestCase):
             with self.subTest():
                 value = getattr(subscription, field)
                 self.assertEqual(value, expected)
+
+    def test_str(self):
+        self.assertEqual('1', str(self.import_))

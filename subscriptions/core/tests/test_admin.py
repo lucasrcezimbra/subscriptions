@@ -45,7 +45,7 @@ class ImportModelAdminTest(TestCase):
 
     def test_attr(self):
         attrs = [
-            ('list_display', ('pk',))
+            ('list_display', ('pk','origin',))
         ]
 
         for attr, expected in attrs:

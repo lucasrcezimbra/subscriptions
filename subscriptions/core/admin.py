@@ -9,7 +9,7 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
     import_.short_description = 'Import ID'
 
 class ImportModelAdmin(admin.ModelAdmin):
-    list_display = ('pk',)
+    list_display = ('pk','origin',)
 
 admin.site.register(Subscription, SubscriptionModelAdmin)
 admin.site.register(Import, ImportModelAdmin)

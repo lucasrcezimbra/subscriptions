@@ -22,7 +22,11 @@ class Subscription(models.Model):
     import_t = models.ForeignKey('Import', on_delete=models.CASCADE, null=True)
 
 class Import(models.Model):
+    origin=models.CharField('origem',max_length=100)
     file = models.FileField()
+
+    def __str__(self):
+        return str(self.pk)
 
     def save(self, *args, **kwargs):
         super(Import, self).save(*args, **kwargs)
