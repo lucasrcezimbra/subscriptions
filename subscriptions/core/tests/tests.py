@@ -1,7 +1,9 @@
 import os
+from datetime import date
 from django.test import TestCase
 from subscriptions.core.models import Import,Subscription
 from subscriptions.core.helpers import SubscriptionImporter
+from unittest import skip
 
 TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -67,22 +69,41 @@ class ImportViewPostTest(TestCase):
     def test_should_create_subscription(self):
         self.assertTrue(Subscription.objects.exists())
 
+    @skip('Fix')
     def test_should_create_import(self):
-        # self.assertTrue(Import.objects.exists())
-        pass
+        self.assertTrue(Import.objects.exists())
 
 class SubscriptionImporterHelperTest(TestCase):
     def setUp(self):
         filepath = TESTS_PATH + '/test.csv'
         self.importer = SubscriptionImporter(filepath)
+        self.importer.save()
 
     def test_new(self):
         self.assertIsInstance(self.importer, SubscriptionImporter)
 
+    @skip('Fix')
     def test_import(self):
-        self.importer.save()
         self.assertTrue(Subscription.objects.exists())
-        # self.assertTrue(Import.objects.exists())
+        self.assertTrue(Import.objects.exists())
+
+    def test_fields_imported(self):
+        fields = (
+            ('name','Lucas Rangel Cezimbra 1'),
+            ('email', 'lucas.cezimbra@gmail.com'),
+            ('name_for_bib_number', 'Lucas 1'),
+            ('gender', 'M'),
+            ('date_of_birth', date(1996, 8, 12)),
+            ('city', 'Porto Alegre'),
+            ('team', 'Sprint Final'),
+            ('shirt_size', 'P'),
+            ('modality', '1km'),
+        )
+        subscription = Subscription.objects.first()
+        for field, expected in fields:
+            with self.subTest():
+                value = getattr(subscription, field)
+                self.assertEqual(value, expected)
 
 class ImportModelTest(TestCase):
     def setUp(self):
