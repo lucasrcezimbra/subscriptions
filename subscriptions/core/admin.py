@@ -2,7 +2,7 @@ from django.contrib import admin
 from subscriptions.core.models import Import,Subscription
 
 class SubscriptionModelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'name_for_bib_number', 'gender', 'city', 'team', 'shirt_size', 'modality', 'import_')
+    list_display = ('name', 'email', 'gender', 'date_of_birth','city', 'team', 'shirt_size', 'modality', 'import_')
 
     def import_(self, obj):
         return obj.import_t

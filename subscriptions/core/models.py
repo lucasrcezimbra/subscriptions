@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 from django.db import models
 
+
 class Subscription(models.Model):
     GENDERS = (
         ('F', 'Feminino'),
@@ -20,6 +21,7 @@ class Subscription(models.Model):
     shirt_size = models.CharField('tamanho da camiseta', max_length=25)
     modality = models.CharField('modalidade', max_length=25)
     import_t = models.ForeignKey('Import', on_delete=models.CASCADE, null=True)
+
 
 class Import(models.Model):
     origin=models.CharField('origem',max_length=100)

@@ -18,7 +18,7 @@ class SubscriptionModelAdminTest(TestCase):
 
     def test_attr(self):
         attrs = [
-            ('list_display', ('name', 'email', 'name_for_bib_number', 'gender', 'city', 'team', 'shirt_size', 'modality', 'import_'))
+            ('list_display', ('name', 'email', 'gender', 'date_of_birth', 'city', 'team', 'shirt_size', 'modality', 'import_'))
         ]
 
         for attr, expected in attrs:
