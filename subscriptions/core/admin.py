@@ -1,5 +1,15 @@
 from django.contrib import admin
 from subscriptions.core.models import Import,Subscription
 
-admin.site.register(Subscription)
-admin.site.register(Import)
+class SubscriptionModelAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'name_for_bib_number', 'gender', 'city', 'team', 'shirt_size', 'modality', 'import_')
+
+    def import_(self, obj):
+        return obj.import_t
+    import_.short_description = 'Import ID'
+
+class ImportModelAdmin(admin.ModelAdmin):
+    list_display = ('pk',)
+
+admin.site.register(Subscription, SubscriptionModelAdmin)
+admin.site.register(Import, ImportModelAdmin)
