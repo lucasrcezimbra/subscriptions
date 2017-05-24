@@ -16,3 +16,7 @@ class Subscription(models.Model):
     team = models.CharField('equipe', max_length=100, blank=True)
     shirt_size = models.CharField('tamanho da camiseta', max_length=25)
     modality = models.CharField('modalidade', max_length=25)
+    import_t = models.ForeignKey('Import', on_delete=models.CASCADE, null=True)
+
+class Import(models.Model):
+    file = models.FileField()

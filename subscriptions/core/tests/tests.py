@@ -1,6 +1,6 @@
 import os
 from django.test import TestCase
-from subscriptions.core.models import Subscription
+from subscriptions.core.models import Import,Subscription
 from subscriptions.core.helpers import SubscriptionImporter
 
 TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -67,6 +67,10 @@ class ImportViewPostTest(TestCase):
     def test_should_create_subscription(self):
         self.assertTrue(Subscription.objects.exists())
 
+    def test_should_create_import(self):
+        # self.assertTrue(Import.objects.exists())
+        pass
+
 class SubscriptionImporterHelperTest(TestCase):
     def setUp(self):
         filepath = TESTS_PATH + '/test.csv'
@@ -78,5 +82,32 @@ class SubscriptionImporterHelperTest(TestCase):
     def test_import(self):
         self.importer.save()
         self.assertTrue(Subscription.objects.exists())
+        # self.assertTrue(Import.objects.exists())
 
+class ImportModelTest(TestCase):
+    def setUp(self):
+        filepath = TESTS_PATH + '/test.csv'
+        self.import_ = Import.objects.create(
+            file=filepath
+        )
 
+    def test_new(self):
+        self.assertTrue(Import.objects.exists())
+
+    def test_delete_subscriptions_when_delete_import(self):
+        for i in range(5):
+            Subscription.objects.create(
+                name='Lucas Rangel Cezimbra',
+                email='lucas.cezimbra@gmail.com',
+                name_for_bib_number='Lucas',
+                gender='M',
+                date_of_birth='1996-08-12',
+                city='Porto Alegre',
+                team='Sprint Final',
+                shirt_size='P',
+                modality='5km',
+                import_t=self.import_,
+            )
+
+        self.import_.delete()
+        self.assertTrue(not Subscription.objects.exists())

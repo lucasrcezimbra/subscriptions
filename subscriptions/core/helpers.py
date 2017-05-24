@@ -10,7 +10,6 @@ class SubscriptionImporter:
     def save(self):
         csv = pd.DataFrame.from_csv(self.filepath, sep=';')
         records = csv.to_dict('records')
-        # import pdb;pdb.set_trace()
         model_instances = [Subscription(
             name=record['*Nome Completo'],
             email=record['E-mail'],
