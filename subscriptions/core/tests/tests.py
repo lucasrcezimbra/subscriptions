@@ -30,49 +30,6 @@ class SubscriptionTest(TestCase):
                 self.assertTrue(field.blank)
 
 
-class ImportViewTest(TestCase):
-    def setUp(self):
-        self.response = self.client.get('/import/')
-
-    def test_get(self):
-        self.assertEqual(200, self.response.status_code)
-
-    def test_return_import_template(self):
-        self.assertTemplateUsed(self.response, 'import.html')
-
-    def test_html_contains(self):
-        tags = (
-            ('<form', 1),
-            ('<input', 3),
-            ('type="submit"', 1),
-            ('enctype="multipart/form-data"', 1)
-        )
-
-        for tag,count in tags:
-            with self.subTest():
-                self.assertContains(self.response, tag, count)
-
-    def test_contains_crsf(self):
-        self.assertContains(self.response, 'csrfmiddlewaretoken')
-
-class ImportViewPostTest(TestCase):
-    def setUp(self):
-        with open(TESTS_PATH + '/test.csv') as file:
-            self.response = self.client.post('/import/', {'file': file})
-
-    def test_post(self):
-        self.assertEqual(200, self.response.status_code)
-
-    def test_template(self):
-        self.assertTemplateUsed(self.response, 'import_ok.html')
-
-    def test_should_create_subscription(self):
-        self.assertTrue(Subscription.objects.exists())
-
-    @skip('Fix')
-    def test_should_create_import(self):
-        self.assertTrue(Import.objects.exists())
-
 class SubscriptionImporterHelperTest(TestCase):
     def setUp(self):
         filepath = TESTS_PATH + '/test.csv'
