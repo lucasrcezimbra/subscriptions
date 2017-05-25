@@ -1,5 +1,5 @@
 from django.contrib import admin
-from subscriptions.core.models import Import,Subscription
+from subscriptions.core.models import Column,Import,Subscription
 
 class SubscriptionModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'gender', 'date_of_birth','city', 'team', 'shirt_size', 'modality', 'import_')
@@ -11,5 +11,9 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
 class ImportModelAdmin(admin.ModelAdmin):
     list_display = ('pk','origin',)
 
-admin.site.register(Subscription, SubscriptionModelAdmin)
+class ColumnModelAdmin(admin.ModelAdmin):
+    list_display = ('column_name', 'id',)
+
+admin.site.register(Column, ColumnModelAdmin)
 admin.site.register(Import, ImportModelAdmin)
+admin.site.register(Subscription, SubscriptionModelAdmin)

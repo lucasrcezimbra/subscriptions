@@ -54,3 +54,27 @@ class Import(models.Model):
         ) for record in records]
 
         Subscription.objects.bulk_create(model_instances)
+
+class Column(models.Model):
+    COLUMNS = (
+        ('name', 'name'),
+        ('email', 'email'),
+        ('name_for_bib_number', 'name_for_bib_number'),
+        ('gender', 'gender'),
+        ('date_of_birth', 'date_of_birth'),
+        ('city', 'city'),
+        ('team', 'team'),
+        ('shirt_size', 'shirt_size'),
+        ('modality', 'modality'),
+    )
+
+    column_name = models.CharField('coluna', max_length=20,
+                                   choices=COLUMNS, default='')
+    id = models.CharField(max_length=100, primary_key=True)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Column, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.id)

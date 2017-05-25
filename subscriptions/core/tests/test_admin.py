@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.test import TestCase
-from subscriptions.core.admin import ImportModelAdmin, SubscriptionModelAdmin
-from subscriptions.core.models import Import,Subscription
+from subscriptions.core.admin import ColumnModelAdmin, ImportModelAdmin, SubscriptionModelAdmin
+from subscriptions.core.models import Column,Import,Subscription
 from unittest.mock import Mock
 
 class SubscriptionModelAdminTest(TestCase):
@@ -46,6 +46,28 @@ class ImportModelAdminTest(TestCase):
     def test_attr(self):
         attrs = [
             ('list_display', ('pk','origin',))
+        ]
+
+        for attr, expected in attrs:
+            with self.subTest():
+                self.assertEqual(expected, getattr(self.model_admin, attr))
+
+
+class ColumnModelAdminTest(TestCase):
+    def setUp(self):
+        self.model_admin = ColumnModelAdmin(Column, admin.site)
+
+    def test_model_admin(self):
+        self.assertIsInstance(self.model_admin, ColumnModelAdmin)
+
+    def test_is_registered_in_admin(self):
+        self.assertTrue(admin.site.is_registered(Column))
+        self.assertIsInstance(admin.site._registry[Column],
+                              ColumnModelAdmin)
+
+    def test_attr(self):
+        attrs = [
+            ('list_display', ('column_name', 'id',)),
         ]
 
         for attr, expected in attrs:
