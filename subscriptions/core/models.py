@@ -55,6 +55,8 @@ class Import(models.Model):
 
         Subscription.objects.bulk_create(model_instances)
 
+
+
 class Column(models.Model):
     COLUMNS = (
         ('name', 'name'),
@@ -66,6 +68,7 @@ class Column(models.Model):
         ('team', 'team'),
         ('shirt_size', 'shirt_size'),
         ('modality', 'modality'),
+        ('ignore', 'ignore')
     )
 
     column_name = models.CharField('coluna', max_length=20,

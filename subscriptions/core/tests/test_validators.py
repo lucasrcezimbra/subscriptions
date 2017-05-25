@@ -8,6 +8,7 @@ CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
 INVALID_CSV_PATH = os.path.join(TESTS_PATH, 'columns_invalid.csv')
 
 class ValidateFileTest(TestCase):
+    fixtures = ['columns.json']
     def setUp(self):
         self.valid_import = Import(origin='Sprint Final',file=CSV_PATH)
         self.invalid_import = Import(origin='Sprint Final',file=INVALID_CSV_PATH)
