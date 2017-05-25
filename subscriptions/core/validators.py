@@ -1,15 +1,19 @@
 import pandas as pd
 from django.core.exceptions import ValidationError
+import subscriptions.core.models
 
 class ValidateFile:
     def columns(value):
-        valid_columns = ("*Nome Completo","Nome para Numero de Peito","*Sexo (M ou F)","*Data Nascimento (dd/mm/aaaa)","CPF","Cidade","Equipe","E-mail","Modalidade","Tamanho da Camiseta")
         filepath = 'test123.csv'
         with open(filepath, 'wb+') as destination:
             for chunk in value.chunks():
                 destination.write(chunk)
 
         csv = pd.DataFrame.from_csv(filepath, sep=';')
+
+        columns = subscriptions.core.models.\
+                Column.objects.filter(id__in=set(csv.columns)).values('id')
+        valid_columns = [c['id'] for c in columns]
         invalid_columns = [column
                            for column in csv.columns
                            if column not in valid_columns]
