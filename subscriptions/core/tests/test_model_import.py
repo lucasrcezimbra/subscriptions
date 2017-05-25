@@ -2,6 +2,7 @@ import os
 from datetime import date
 from django.test import TestCase
 from subscriptions.core.models import Import,Subscription
+from subscriptions.core.validators import ValidateFile
 
 TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
 CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
@@ -62,3 +63,7 @@ class ImportModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('1', str(self.import_))
+
+    def test_file_validators(self):
+        self.assertEqual([ValidateFile.columns],
+                         Import.file.field._validators)

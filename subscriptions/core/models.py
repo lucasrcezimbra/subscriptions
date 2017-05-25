@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from datetime import datetime
 from django.db import models
+from subscriptions.core.validators import ValidateFile
 
 
 class Subscription(models.Model):
@@ -25,7 +26,7 @@ class Subscription(models.Model):
 
 class Import(models.Model):
     origin=models.CharField('origem',max_length=100)
-    file = models.FileField()
+    file = models.FileField(validators=[ValidateFile.columns])
 
     def __str__(self):
         return str(self.pk)
