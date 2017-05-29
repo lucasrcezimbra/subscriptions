@@ -12,8 +12,8 @@ class ValidateFile:
         csv = pd.DataFrame.from_csv(filepath, sep=';')
 
         columns = subscriptions.core.models.\
-                Column.objects.filter(id__in=set(csv.columns)).values('id')
-        valid_columns = [c['id'] for c in columns]
+                Column.objects.filter(file_name__in=set(csv.columns)).values('file_name')
+        valid_columns = [c['file_name'] for c in columns]
         invalid_columns = [column
                            for column in csv.columns
                            if column not in valid_columns]

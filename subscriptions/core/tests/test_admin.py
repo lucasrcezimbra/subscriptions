@@ -67,7 +67,7 @@ class ColumnModelAdminTest(TestCase):
 
     def test_attr(self):
         attrs = [
-            ('list_display', ('column_name', 'id',)),
+            ('list_display', ('subscription_name', 'file_name',)),
         ]
 
         for attr, expected in attrs:

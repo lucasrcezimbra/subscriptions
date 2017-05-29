@@ -12,7 +12,7 @@ class ImportModelAdmin(admin.ModelAdmin):
     list_display = ('pk','origin',)
 
 class ColumnModelAdmin(admin.ModelAdmin):
-    list_display = ('column_name', 'id',)
+    list_display = ('subscription_name', 'file_name',)
 
 admin.site.register(Column, ColumnModelAdmin)
 admin.site.register(Import, ImportModelAdmin)

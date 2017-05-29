@@ -5,8 +5,8 @@ from subscriptions.core.models import Column
 class ColumnTest(TestCase):
     def setUp(self):
         self.column = Column(
-            column_name='name',
-            id='*Nome Completo',
+            subscription_name='name',
+            file_name='*Nome Completo',
         )
 
     def test_create(self):
@@ -15,8 +15,8 @@ class ColumnTest(TestCase):
 
     def test_invalid_column_name(self):
         column = Column(
-            column_name='invalid_column',
-            id='*Nome Completo',
+            subscription_name='invalid_column',
+            file_name='*Nome Completo',
         )
         with self.assertRaises(ValidationError):
             column.save()

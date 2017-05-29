@@ -3,70 +3,70 @@
     "model": "core.column",
     "pk": "*Data Nascimento (dd/mm/aaaa)",
     "fields": {
-        "column_name": "date_of_birth"
+        "subscription_name": "date_of_birth"
     }
 },
 {
     "model": "core.column",
     "pk": "*Nome Completo",
     "fields": {
-        "column_name": "name"
+        "subscription_name": "name"
     }
 },
 {
     "model": "core.column",
     "pk": "*Sexo (M ou F)",
     "fields": {
-        "column_name": "gender"
+        "subscription_name": "gender"
     }
 },
 {
     "model": "core.column",
     "pk": "CPF",
     "fields": {
-        "column_name": "ignore"
+        "subscription_name": "ignore"
     }
 },
 {
     "model": "core.column",
     "pk": "Cidade",
     "fields": {
-        "column_name": "city"
+        "subscription_name": "city"
     }
 },
 {
     "model": "core.column",
     "pk": "E-mail",
     "fields": {
-        "column_name": "email"
+        "subscription_name": "email"
     }
 },
 {
     "model": "core.column",
     "pk": "Equipe",
     "fields": {
-        "column_name": "team"
+        "subscription_name": "team"
     }
 },
 {
     "model": "core.column",
     "pk": "Modalidade",
     "fields": {
-        "column_name": "modality"
+        "subscription_name": "modality"
     }
 },
 {
     "model": "core.column",
     "pk": "Nome para Numero de Peito",
     "fields": {
-        "column_name": "name_for_bib_number"
+        "subscription_name": "name_for_bib_number"
     }
 },
 {
     "model": "core.column",
     "pk": "Tamanho da Camiseta",
     "fields": {
-        "column_name": "shirt_size"
+        "subscription_name": "shirt_size"
     }
 }
 ]

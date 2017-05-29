@@ -71,13 +71,13 @@ class Column(models.Model):
         ('ignore', 'ignore')
     )
 
-    column_name = models.CharField('coluna', max_length=20,
+    subscription_name = models.CharField('coluna', max_length=20,
                                    choices=COLUMNS, default='')
-    id = models.CharField(max_length=100, primary_key=True)
+    file_name = models.CharField(max_length=100, primary_key=True)
 
     def save(self, *args, **kwargs):
         self.full_clean()
         super(Column, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.file_name)
