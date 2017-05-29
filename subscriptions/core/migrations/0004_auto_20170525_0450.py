@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='import',
             name='file',
-            field=models.FileField(upload_to='', validators=[subscriptions.core.validators.ValidateFile.columns]),
+            field=models.FileField(upload_to='', validators=[subscriptions.core.validators.validate_file]),
         ),
     ]
