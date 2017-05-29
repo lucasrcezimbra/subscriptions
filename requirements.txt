@@ -3,3 +3,4 @@ django-test-without-migrations==0.6
 pandas==0.20.1
 ipython==6.0.0
 django-extensions==1.7.9
+django-grappelli==2.10.1
