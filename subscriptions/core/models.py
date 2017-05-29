@@ -37,24 +37,27 @@ class Import(models.Model):
 
     def _import(self):
         csv = pd.DataFrame.from_csv(self.file.name, sep=';')
+        columns = Column.objects.filter(file_name__in=set(csv.columns))
         records = csv.to_dict('records')
         model_instances = [Subscription(
-            name=record['*Nome Completo'],
-            email=record['E-mail'],
-            name_for_bib_number=record['Nome para Numero de Peito'],
-            gender=record['*Sexo (M ou F)'],
+            name=record[self._columns_names(columns, 'name')],
+            email=record[self._columns_names(columns, 'email')],
+            name_for_bib_number=record[self._columns_names(columns, 'name_for_bib_number')],
+            gender=record[self._columns_names(columns, 'gender')],
             date_of_birth=datetime.strptime(
-                record['*Data Nascimento (dd/mm/aaaa)'],
+                record[self._columns_names(columns, 'date_of_birth')],
                 '%d/%m/%Y').date(),
-            city=record['Cidade'],
-            team=record['Equipe'],
-            shirt_size=record['Tamanho da Camiseta'],
-            modality=record['Modalidade'],
+            city=record[self._columns_names(columns, 'city')],
+            team=record[self._columns_names(columns, 'team')],
+            shirt_size=record[self._columns_names(columns, 'shirt_size')],
+            modality=record[self._columns_names(columns, 'modality')],
             import_t=self,
         ) for record in records]
 
         Subscription.objects.bulk_create(model_instances)
 
+    def _columns_names(self, columns, subscription_name):
+        return columns.filter(subscription_name__exact=subscription_name)[0].file_name
 
 
 class Column(models.Model):

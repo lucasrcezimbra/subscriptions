@@ -1,6 +1,13 @@
 [
 {
     "model": "core.column",
+    "pk": "*Data Nascimento",
+    "fields": {
+        "subscription_name": "date_of_birth"
+    }
+},
+{
+    "model": "core.column",
     "pk": "*Data Nascimento (dd/mm/aaaa)",
     "fields": {
         "subscription_name": "date_of_birth"
@@ -29,6 +36,13 @@
 },
 {
     "model": "core.column",
+    "pk": "Camiseta",
+    "fields": {
+        "subscription_name": "shirt_size"
+    }
+},
+{
+    "model": "core.column",
     "pk": "Cidade",
     "fields": {
         "subscription_name": "city"
@@ -36,7 +50,28 @@
 },
 {
     "model": "core.column",
+    "pk": "Dist?ncia",
+    "fields": {
+        "subscription_name": "modality"
+    }
+},
+{
+    "model": "core.column",
+    "pk": "Dist\u00e2ncia",
+    "fields": {
+        "subscription_name": "modality"
+    }
+},
+{
+    "model": "core.column",
     "pk": "E-mail",
+    "fields": {
+        "subscription_name": "email"
+    }
+},
+{
+    "model": "core.column",
+    "pk": "Email",
     "fields": {
         "subscription_name": "email"
     }
@@ -57,9 +92,30 @@
 },
 {
     "model": "core.column",
+    "pk": "Nome",
+    "fields": {
+        "subscription_name": "name"
+    }
+},
+{
+    "model": "core.column",
+    "pk": "Nome para Numero",
+    "fields": {
+        "subscription_name": "name_for_bib_number"
+    }
+},
+{
+    "model": "core.column",
     "pk": "Nome para Numero de Peito",
     "fields": {
         "subscription_name": "name_for_bib_number"
+    }
+},
+{
+    "model": "core.column",
+    "pk": "Sexo (M ou F)",
+    "fields": {
+        "subscription_name": "gender"
     }
 },
 {

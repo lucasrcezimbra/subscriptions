@@ -8,6 +8,8 @@ TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
 CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
 
 class ImportModelTest(TestCase):
+    fixtures = ['columns.json']
+
     def setUp(self):
         self.import_ = Import.objects.create(
             origin='Sprint Final',
@@ -67,3 +69,25 @@ class ImportModelTest(TestCase):
     def test_file_validators(self):
         self.assertEqual([ValidateFile.columns],
                          Import.file.field._validators)
+
+    def test_import_get_file_columns_names(self):
+        import_ = Import.objects.create(
+            origin='Sprint Final',
+            file=os.path.join(TESTS_PATH, 'test2.csv')
+        )
+        fields = (
+            ('name','Lucas Rangel Cezimbra 1'),
+            ('email', 'lucas.cezimbra@gmail.com'),
+            ('name_for_bib_number', 'Lucas 1'),
+            ('gender', 'M'),
+            ('date_of_birth', date(1996, 8, 12)),
+            ('city', 'Porto Alegre'),
+            ('team', 'Sprint Final'),
+            ('shirt_size', 'P'),
+            ('modality', '1km'),
+        )
+        subscription = Subscription.objects.first()
+        for field, expected in fields:
+            with self.subTest():
+                value = getattr(subscription, field)
+                self.assertEqual(value, expected)
