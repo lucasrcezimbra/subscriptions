@@ -108,3 +108,25 @@ class Column(models.Model):
 
     def __str__(self):
         return str(self.file_name)
+
+class ShirtSize(models.Model):
+    SHIRT_SIZES = (
+        ('bl', 'Baby Look'),
+        ('p', 'P'),
+        ('m', 'M'),
+        ('g', 'G'),
+        ('gg', 'GG'),
+        ('2', 'Infantil 2'),
+        ('4', 'Infantil 4'),
+        ('6', 'Infantil 6'),
+        ('8', 'Infantil 8'),
+        ('10', 'Infantil 10'),
+        ('12', 'Infantil 12'),
+        ('14', 'Infantil 14'),
+    )
+    shirt_size = models.CharField('camiseta', max_length=10,
+                                  choices=SHIRT_SIZES, default='')
+    file_shirt_size = models.CharField(max_length=100, primary_key=True)
+
+    def __str__(self):
+        return str(self.shirt_size)
