@@ -37,27 +37,51 @@ class Import(models.Model):
 
     def _import(self):
         csv = pd.DataFrame.from_csv(self.file.name, sep=';')
-        columns = Column.objects.filter(file_name__in=set(csv.columns))
+        self._create_subscriptions(csv)
+
+    def _file_column(self, subscription_name):
+        column_filter = self._columns.filter(
+            subscription_name__exact=subscription_name
+        )
+        return column_filter[0].file_name
+
+    def _file_columns(self):
+        return {
+            'name':self._file_column('name'),
+            'email':self._file_column('email'),
+            'name_for_bib_number':self._file_column('name_for_bib_number'),
+            'gender':self._file_column('gender'),
+            'date_of_birth':self._file_column('date_of_birth'),
+            'city':self._file_column('city'),
+            'team':self._file_column('team'),
+            'shirt_size':self._file_column('shirt_size'),
+            'modality':self._file_column('modality'),
+        }
+
+    def _create_subscriptions(self, csv):
+        self._columns = Column.objects.filter(file_name__in=set(csv.columns))
         records = csv.to_dict('records')
-        model_instances = [Subscription(
-            name=record[self._columns_names(columns, 'name')],
-            email=record[self._columns_names(columns, 'email')],
-            name_for_bib_number=record[self._columns_names(columns, 'name_for_bib_number')],
-            gender=record[self._columns_names(columns, 'gender')],
-            date_of_birth=datetime.strptime(
-                record[self._columns_names(columns, 'date_of_birth')],
-                '%d/%m/%Y').date(),
-            city=record[self._columns_names(columns, 'city')],
-            team=record[self._columns_names(columns, 'team')],
-            shirt_size=record[self._columns_names(columns, 'shirt_size')],
-            modality=record[self._columns_names(columns, 'modality')],
-            import_t=self,
-        ) for record in records]
+        file_columns = self._file_columns()
+        model_instances = [self._new_subscription(record, file_columns)
+                           for record in records]
 
         Subscription.objects.bulk_create(model_instances)
 
-    def _columns_names(self, columns, subscription_name):
-        return columns.filter(subscription_name__exact=subscription_name)[0].file_name
+    def _new_subscription(self, record, file_columns):
+        return Subscription(
+            name=record[file_columns['name']],
+            email=record[file_columns['email']],
+            name_for_bib_number=record[file_columns['name_for_bib_number']],
+            gender=record[file_columns['gender']],
+            date_of_birth=datetime.strptime(
+                record[file_columns['date_of_birth']],
+                '%d/%m/%Y').date(),
+            city=record[file_columns['city']],
+            team=record[file_columns['team']],
+            shirt_size=record[file_columns['shirt_size']],
+            modality=record[file_columns['modality']],
+            import_t=self,
+        )
 
 
 class Column(models.Model):
