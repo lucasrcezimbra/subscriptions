@@ -8,7 +8,7 @@ TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
 CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
 
 class ImportModelTest(TestCase):
-    fixtures = ['columns.json']
+    fixtures = ['columns.json', 'shirt_sizes.json']
 
     def setUp(self):
         self.import_ = Import.objects.create(
@@ -22,7 +22,7 @@ class ImportModelTest(TestCase):
     def test_delete_subscriptions_when_delete_import(self):
         shirt_size,_ = ShirtSize.objects.get_or_create(
             shirt_size='P',
-            file_shirt_size='Camiseta P',
+            file_shirt_size='P',
         )
         for i in range(5):
             Subscription.objects.create(

@@ -68,9 +68,8 @@ class Import(models.Model):
         Subscription.objects.bulk_create(model_instances)
 
     def _new_subscription(self, record, file_columns):
-        shirt_size, _ = ShirtSize.objects.get_or_create(
-            shirt_size='P',
-            file_shirt_size='Camiseta P',
+        shirt_size = ShirtSize.objects.get(
+            file_shirt_size__exact=record[file_columns['shirt_size']]
         )
         return Subscription(
             name=record[file_columns['name']],
