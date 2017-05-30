@@ -1,0 +1,37 @@
+[
+{
+    "model": "core.shirtsize",
+    "pk": "BL",
+    "fields": {
+        "shirt_size": "BL"
+    }
+},
+{
+    "model": "core.shirtsize",
+    "pk": "G",
+    "fields": {
+        "shirt_size": "G"
+    }
+},
+{
+    "model": "core.shirtsize",
+    "pk": "GG",
+    "fields": {
+        "shirt_size": "GG"
+    }
+},
+{
+    "model": "core.shirtsize",
+    "pk": "M",
+    "fields": {
+        "shirt_size": "M"
+    }
+},
+{
+    "model": "core.shirtsize",
+    "pk": "P",
+    "fields": {
+        "shirt_size": "P"
+    }
+}
+]

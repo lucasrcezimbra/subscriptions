@@ -15,7 +15,6 @@ class ShirtSizeModelTest(TestCase):
         self.shirt_size.save()
         self.assertTrue(ShirtSize.objects.exists())
 
-    @skip('Validation not implemented')
     def test_invalid_shirt_size(self):
         shirt_size = ShirtSize(
             shirt_size='invalid_shirt_size',
