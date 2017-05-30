@@ -66,17 +66,9 @@ class Import(models.Model):
         return column_filter[0].file_name
 
     def _file_columns(self):
-        return {
-            'name':self._file_column('name'),
-            'email':self._file_column('email'),
-            'name_for_bib_number':self._file_column('name_for_bib_number'),
-            'gender':self._file_column('gender'),
-            'date_of_birth':self._file_column('date_of_birth'),
-            'city':self._file_column('city'),
-            'team':self._file_column('team'),
-            'shirt_size':self._file_column('shirt_size'),
-            'modality':self._file_column('modality'),
-        }
+        columns = self._columns.exclude(subscription_name__exact='ignore')\
+                               .values_list('subscription_name', flat=True)
+        return { column:self._file_column(column) for column in columns }
 
     def _create_subscriptions(self, csv):
         self._columns = Column.objects.filter(file_name__in=set(csv.columns))
@@ -91,20 +83,14 @@ class Import(models.Model):
         shirt_size = ShirtSize.objects.get(
             file_shirt_size__exact=record[file_columns['shirt_size']]
         )
-        return Subscription(
-            name=record[file_columns['name']],
-            email=record[file_columns['email']],
-            name_for_bib_number=record[file_columns['name_for_bib_number']],
-            gender=record[file_columns['gender']],
-            date_of_birth=datetime.strptime(
-                record[file_columns['date_of_birth']],
-                '%d/%m/%Y').date(),
-            city=record[file_columns['city']],
-            team=record[file_columns['team']],
-            shirt_size=shirt_size,
-            modality=record[file_columns['modality']],
-            import_t=self,
-        )
+        params = {column:record[file_columns[column]] for column in file_columns}
+        if params['date_of_birth']:
+            params['date_of_birth'] = datetime.strptime(
+                params['date_of_birth'],'%d/%m/%Y'
+            ).date()
+        params['import_t'] = self
+
+        return Subscription(**params)
 
 
 class Column(models.Model):
