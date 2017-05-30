@@ -40,7 +40,7 @@ class ValidateFileTest(TestCase):
         self.assertIsNone(self.valid_import.full_clean())
 
     def test_shirt_sizes_invalid(self):
-        invalid_shirt_sizes = ["Errado", "Inválido"]
+        invalid_shirt_sizes = set(["Errado", "Inválido"])
         expected_message = ['Tamanhos de Camiseta {} invalidos'\
                             .format(invalid_shirt_sizes)]
         expected_error = str({'file': expected_message })

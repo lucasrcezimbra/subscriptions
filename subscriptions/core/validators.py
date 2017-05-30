@@ -55,7 +55,7 @@ class FileValidator(object):
             raise ValidationError(
                 message,
                 code='shirt_size',
-                params={'invalid_shirt_sizes': invalid_shirt_sizes}
+                params={'invalid_shirt_sizes': set(invalid_shirt_sizes)}
             )
 
     def __eq__(self, other):
