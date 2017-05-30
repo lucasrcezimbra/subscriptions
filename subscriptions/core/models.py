@@ -19,8 +19,8 @@ class Subscription(models.Model):
     date_of_birth = models.DateField('data de nascimento')
     city = models.CharField('cidade', max_length=100, blank=True)
     team = models.CharField('equipe', max_length=100, blank=True)
-    shirt_size = models.CharField('tamanho da camiseta', max_length=25)
     modality = models.CharField('modalidade', max_length=25)
+    shirt_size = models.ForeignKey('ShirtSize', on_delete=models.PROTECT)
     import_t = models.ForeignKey('Import', on_delete=models.CASCADE, null=True)
 
 
@@ -68,6 +68,10 @@ class Import(models.Model):
         Subscription.objects.bulk_create(model_instances)
 
     def _new_subscription(self, record, file_columns):
+        shirt_size, _ = ShirtSize.objects.get_or_create(
+            shirt_size='P',
+            file_shirt_size='Camiseta P',
+        )
         return Subscription(
             name=record[file_columns['name']],
             email=record[file_columns['email']],
@@ -78,7 +82,7 @@ class Import(models.Model):
                 '%d/%m/%Y').date(),
             city=record[file_columns['city']],
             team=record[file_columns['team']],
-            shirt_size=record[file_columns['shirt_size']],
+            shirt_size=shirt_size,
             modality=record[file_columns['modality']],
             import_t=self,
         )
@@ -130,3 +134,6 @@ class ShirtSize(models.Model):
 
     def __str__(self):
         return str(self.shirt_size)
+
+    def __eq__(self, other):
+        return other == self.shirt_size

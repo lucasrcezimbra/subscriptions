@@ -1,8 +1,12 @@
 from django.test import TestCase
-from subscriptions.core.models import Subscription
+from subscriptions.core.models import ShirtSize, Subscription
 
 class SubscriptionTest(TestCase):
     def test_create(self):
+        shirt_size = ShirtSize.objects.create(
+            shirt_size='P',
+            file_shirt_size='Camiseta P',
+        )
         subscription = Subscription.objects.create(
             name='Lucas Rangel Cezimbra',
             email='lucas.cezimbra@gmail.com',
@@ -11,7 +15,7 @@ class SubscriptionTest(TestCase):
             date_of_birth='1996-08-12',
             city='Porto Alegre',
             team='Sprint Final',
-            shirt_size='P',
+            shirt_size=shirt_size,
             modality='5km',
         )
 
