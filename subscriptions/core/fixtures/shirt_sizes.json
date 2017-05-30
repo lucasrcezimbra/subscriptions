@@ -33,5 +33,12 @@
     "fields": {
         "shirt_size": "P"
     }
+},
+{
+    "model": "core.shirtsize",
+    "pk": "Baby Look M",
+    "fields": {
+        "shirt_size": "BL"
+    }
 }
 ]

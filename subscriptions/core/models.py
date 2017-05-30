@@ -26,7 +26,7 @@ class Subscription(models.Model):
     )
 
     name = models.CharField('nome', max_length=200)
-    email = models.EmailField('e-mail')
+    email = models.EmailField('e-mail', blank=True)
     name_for_bib_number = models.CharField('nome para número de peito',
                                            max_length=200, blank=True)
     gender = models.CharField('sexo', max_length=1, choices=GENDERS)
@@ -56,7 +56,7 @@ class Import(models.Model):
         self._import()
 
     def _import(self):
-        csv = pd.DataFrame.from_csv(self.file.name, sep=';')
+        csv = pd.read_csv(self.file.name, sep=';', keep_default_na=False)
         self._create_subscriptions(csv)
 
     def _file_column(self, subscription_name):
@@ -84,13 +84,17 @@ class Import(models.Model):
             file_shirt_size__exact=record[file_columns['shirt_size']]
         )
         params = {column:record[file_columns[column]] for column in file_columns}
+        if params['shirt_size']:
+            params['shirt_size'] = shirt_size
         if params['date_of_birth']:
             params['date_of_birth'] = datetime.strptime(
                 params['date_of_birth'],'%d/%m/%Y'
             ).date()
         params['import_t'] = self
 
-        return Subscription(**params)
+        subscription = Subscription(**params)
+        subscription.full_clean()
+        return subscription
 
 
 class Column(models.Model):

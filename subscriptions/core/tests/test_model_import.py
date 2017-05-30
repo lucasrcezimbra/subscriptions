@@ -54,7 +54,7 @@ class ImportModelTest(TestCase):
             ('date_of_birth', date(1996, 8, 12)),
             ('city', 'Porto Alegre'),
             ('team', 'Sprint Final'),
-            ('shirt_size', 'P'),
+            ('shirt_size', 'BL'),
             ('modality', '1km'),
         )
         subscription = Subscription.objects.first()
@@ -83,7 +83,7 @@ class ImportModelTest(TestCase):
             ('date_of_birth', date(1996, 8, 12)),
             ('city', 'Porto Alegre'),
             ('team', 'Sprint Final'),
-            ('shirt_size', 'P'),
+            ('shirt_size', 'BL'),
             ('modality', '1km'),
         )
         subscription = Subscription.objects.first()
