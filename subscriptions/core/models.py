@@ -4,6 +4,20 @@ from datetime import datetime
 from django.db import models
 from subscriptions.core.validators import validate_file
 
+SHIRT_SIZES = (
+    ('BL', 'Baby Look'),
+    ('P', 'P'),
+    ('M', 'M'),
+    ('G', 'G'),
+    ('GG', 'GG'),
+    ('2', 'Infantil 2'),
+    ('4', 'Infantil 4'),
+    ('6', 'Infantil 6'),
+    ('8', 'Infantil 8'),
+    ('10', 'Infantil 10'),
+    ('12', 'Infantil 12'),
+    ('14', 'Infantil 14'),
+)
 
 class Subscription(models.Model):
     GENDERS = (
@@ -20,8 +34,14 @@ class Subscription(models.Model):
     city = models.CharField('cidade', max_length=100, blank=True)
     team = models.CharField('equipe', max_length=100, blank=True)
     modality = models.CharField('modalidade', max_length=25)
-    shirt_size = models.ForeignKey('ShirtSize', on_delete=models.PROTECT)
-    import_t = models.ForeignKey('Import', on_delete=models.CASCADE, null=True)
+    shirt_size = models.CharField('tamanho da camiseta',
+                                  max_length=20, choices=SHIRT_SIZES)
+    import_t = models.ForeignKey('Import',
+                                 on_delete=models.CASCADE, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Subscription, self).save(*args, **kwargs)
 
 
 class Import(models.Model):
@@ -101,8 +121,7 @@ class Column(models.Model):
         ('ignore', 'ignore')
     )
 
-    subscription_name = models.CharField('coluna', max_length=20,
-                                   choices=COLUMNS, default='')
+    subscription_name = models.CharField('coluna', max_length=20, choices=COLUMNS)
     file_name = models.CharField(max_length=100, primary_key=True)
 
     def save(self, *args, **kwargs):
@@ -113,22 +132,7 @@ class Column(models.Model):
         return str(self.file_name)
 
 class ShirtSize(models.Model):
-    SHIRT_SIZES = (
-        ('BL', 'Baby Look'),
-        ('P', 'P'),
-        ('M', 'M'),
-        ('G', 'G'),
-        ('GG', 'GG'),
-        ('2', 'Infantil 2'),
-        ('4', 'Infantil 4'),
-        ('6', 'Infantil 6'),
-        ('8', 'Infantil 8'),
-        ('10', 'Infantil 10'),
-        ('12', 'Infantil 12'),
-        ('14', 'Infantil 14'),
-    )
-    shirt_size = models.CharField('camiseta', max_length=10,
-                                  choices=SHIRT_SIZES, default='')
+    shirt_size = models.CharField('camiseta', max_length=10, choices=SHIRT_SIZES)
     file_shirt_size = models.CharField(max_length=100, primary_key=True)
 
     def save(self, *args, **kwargs):

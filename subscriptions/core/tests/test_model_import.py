@@ -1,7 +1,7 @@
 import os
 from datetime import date
 from django.test import TestCase
-from subscriptions.core.models import Import, ShirtSize, Subscription
+from subscriptions.core.models import Import, Subscription
 from subscriptions.core.validators import validate_file
 
 TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -20,10 +20,6 @@ class ImportModelTest(TestCase):
         self.assertTrue(Import.objects.exists())
 
     def test_delete_subscriptions_when_delete_import(self):
-        shirt_size,_ = ShirtSize.objects.get_or_create(
-            shirt_size='P',
-            file_shirt_size='P',
-        )
         for i in range(5):
             Subscription.objects.create(
                 name='Lucas Rangel Cezimbra',
@@ -33,7 +29,7 @@ class ImportModelTest(TestCase):
                 date_of_birth='1996-08-12',
                 city='Porto Alegre',
                 team='Sprint Final',
-                shirt_size=shirt_size,
+                shirt_size='P',
                 modality='5km',
                 import_t=self.import_,
             )
@@ -50,10 +46,6 @@ class ImportModelTest(TestCase):
         self.assertTrue(Import.objects.exists())
 
     def test_import_correct_csv_values(self):
-        shirt_size, _ = ShirtSize.objects.get_or_create(
-            shirt_size='P',
-            file_shirt_size='Camiseta P',
-        )
         fields = (
             ('name','Lucas Rangel Cezimbra 1'),
             ('email', 'lucas.cezimbra@gmail.com'),
@@ -62,7 +54,7 @@ class ImportModelTest(TestCase):
             ('date_of_birth', date(1996, 8, 12)),
             ('city', 'Porto Alegre'),
             ('team', 'Sprint Final'),
-            ('shirt_size', shirt_size),
+            ('shirt_size', 'P'),
             ('modality', '1km'),
         )
         subscription = Subscription.objects.first()
@@ -75,8 +67,7 @@ class ImportModelTest(TestCase):
         self.assertEqual('1', str(self.import_))
 
     def test_file_validators(self):
-        return
-        self.assertEqual([ValidateFile.columns],
+        self.assertEqual([validate_file],
                          Import.file.field._validators)
 
     def test_import_get_file_columns_names(self):
