@@ -7,7 +7,16 @@
 <body>
   <form action="." method="POST">
     {% csrf_token %}
-    <input type="submit" value="Exportar CSV">
+    <label for="{{ form.format.id_for_label }}">{{ form.format.label }}</label>
+    {{ form.format.errors }}
+    {{ form.format }}
+    </div>
+
+    <label for="{{ form.fields.id_for_label }}">{{ form.fields.label }}</label>
+    {{ form.fields.errors }}
+    {{ form.fields }}
+    </div>
+    <input type="submit" value="Exportar">
   </form>
 </body>
 </html>

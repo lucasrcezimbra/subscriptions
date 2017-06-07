@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+from subscriptions.core.forms import ExportForm
 
 class ExportTest(TestCase):
     def setUp(self):
@@ -25,13 +26,22 @@ class ExportTest(TestCase):
     def test_html(self):
         expected_contents = (('<form', 1),
                              ('method="POST"', 1),
-                             ('<input', 2),
-                             ('type="submit"', 1))
+                             ('<input', 3),
+                             ('type="submit"', 1),
+                             ('type="radio"', 1),
+                             ('<select', 1))
 
         for text, count in expected_contents:
             with self.subTest():
                 self.assertContains(self.response, text, count)
 
+    def test_context(self):
+        expected = (('form', ExportForm),)
+
+        for value, type in expected:
+            with self.subTest():
+                context = self.response.context[value]
+                self.assertIsInstance(context, type)
 
     def test_csrf(self):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
