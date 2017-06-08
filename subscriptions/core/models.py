@@ -17,6 +17,8 @@ SHIRT_SIZES = (
     ('10', 'Infantil 10'),
     ('12', 'Infantil 12'),
     ('14', 'Infantil 14'),
+    ('SEM', 'Sem Camiseta'),
+    ('VAZIO', 'VAZIO')
 )
 
 class Subscription(models.Model):
@@ -45,11 +47,11 @@ class Subscription(models.Model):
 
 
 class Import(models.Model):
-    origin=models.CharField('origem',max_length=100)
+    origin = models.CharField('origem',max_length=100)
     file = models.FileField(validators=[validate_file])
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.origin)
 
     def save(self, *args, **kwargs):
         super(Import, self).save(*args, **kwargs)

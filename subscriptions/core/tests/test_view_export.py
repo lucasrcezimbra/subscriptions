@@ -24,7 +24,7 @@ class GetExportTest(TestCase):
                              ('<input', 4),
                              ('type="submit"', 1),
                              ('type="radio"', 2),
-                             ('<Select', 1))
+                             ('<select', 1))
 
         for text, count in expected_contents:
             with self.subTest():

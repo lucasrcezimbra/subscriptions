@@ -64,7 +64,7 @@ class ImportModelTest(TestCase):
                 self.assertEqual(value, expected)
 
     def test_str(self):
-        self.assertEqual('1', str(self.import_))
+        self.assertEqual('Sprint Final', str(self.import_))
 
     def test_file_validators(self):
         self.assertEqual([validate_file],

@@ -29,7 +29,7 @@ class SubscriptionModelAdminTest(TestCase):
         mock = Mock(import_t=5)
         import_ = self.model_admin.import_
         self.assertEqual(5, import_(mock))
-        self.assertEqual('Import ID', import_.short_description)
+        self.assertEqual('Import', import_.short_description)
 
 class ImportModelAdminTest(TestCase):
     def setUp(self):

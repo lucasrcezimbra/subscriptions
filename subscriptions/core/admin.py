@@ -6,7 +6,7 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
 
     def import_(self, obj):
         return obj.import_t
-    import_.short_description = 'Import ID'
+    import_.short_description = 'Import'
 
 class ImportModelAdmin(admin.ModelAdmin):
     list_display = ('pk','origin',)
