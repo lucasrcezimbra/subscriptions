@@ -14,7 +14,7 @@
 
     <label for="{{ form.fields.id_for_label }}">{{ form.fields.label }}</label>
     {{ form.fields.errors }}
-    {{ form.fields }}
+    {{ form.fields|title }}
     </div>
     <input type="submit" value="Exportar">
   </form>
