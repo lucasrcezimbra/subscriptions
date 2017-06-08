@@ -21,9 +21,9 @@ class GetExportTest(TestCase):
     def test_html(self):
         expected_contents = (('<form', 1),
                              ('method="POST"', 1),
-                             ('<input', 3),
+                             ('<input', 4),
                              ('type="submit"', 1),
-                             ('type="radio"', 1),
+                             ('type="radio"', 2),
                              ('<select', 1))
 
         for text, count in expected_contents:
@@ -62,6 +62,12 @@ class PostExportTest(TestCase):
 
     def test_response_content_type_is_csv(self):
         content_type = 'text/csv'
+        self.assertEquals(content_type, self.response.get('Content-Type'))
+
+    def test_response_content_type_is_xlsx(self):
+        self.data = dict(format='xlsx', fields=['id', 'name', 'email'])
+        self.response = self.client.post('/export/', self.data)
+        content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         self.assertEquals(content_type, self.response.get('Content-Type'))
 
     def test_content_is_not_none(self):

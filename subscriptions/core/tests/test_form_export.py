@@ -8,6 +8,7 @@ class ExportFormTest(TestCase):
 
     def test_formats(self):
         self.assertIn(('csv', 'CSV'), self.form.FORMATS)
+        self.assertIn(('xlsx', 'XLSX'), self.form.FORMATS)
 
     def test_has_fields(self):
         expected = ['format', 'fields']
