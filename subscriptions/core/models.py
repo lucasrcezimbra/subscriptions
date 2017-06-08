@@ -91,7 +91,7 @@ class Import(models.Model):
         params = {column:record[file_columns[column]] for column in file_columns}
         if params['shirt_size']:
             params['shirt_size'] = shirt_size
-        if params['date_of_birth']:
+        if type(params['date_of_birth']) == str:
             params['date_of_birth'] = datetime.strptime(
                 params['date_of_birth'],'%d/%m/%Y'
             ).date()
