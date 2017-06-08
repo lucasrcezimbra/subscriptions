@@ -81,3 +81,13 @@ class PostExportTest(TestCase):
         self.credentials = dict(username='admin', password='password')
         self.user = User.objects.create_user(**self.credentials, is_staff=True)
         self.client.login(**self.credentials)
+
+    def test_invalid_field_format(self):
+        data = dict(format='invalid', fields=['id', 'name', 'email'])
+        response = self.client.post('/export/', data)
+        self.assertTemplateUsed(response, 'export.html')
+
+    def test_invalid_field_fields(self):
+        data = dict(format='csv', fields=['name', 'invalid'])
+        response = self.client.post('/export/', data)
+        self.assertTemplateUsed(response, 'export.html')
