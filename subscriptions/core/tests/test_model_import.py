@@ -91,3 +91,26 @@ class ImportModelTest(TestCase):
             with self.subTest():
                 value = getattr(subscription, field)
                 self.assertEqual(value, expected)
+
+    def test_xlsx(self):
+        '''Should works with XLSX'''
+        import_ = Import.objects.create(
+            origin='Sprint Final',
+            file=os.path.join(FILES_PATH, 'test.xlsx')
+        )
+        fields = (
+            ('name','Lucas Rangel Cezimbra 1'),
+            ('email', 'lucas.cezimbra@gmail.com'),
+            ('name_for_bib_number', 'Lucas 1'),
+            ('gender', 'M'),
+            ('date_of_birth', date(1996, 8, 12)),
+            ('city', 'Porto Alegre'),
+            ('team', 'Sprint Final'),
+            ('shirt_size', 'BL'),
+            ('modality', '1km'),
+        )
+        subscription = Subscription.objects.first()
+        for field, expected in fields:
+            with self.subTest():
+                value = getattr(subscription, field)
+                self.assertEqual(value, expected)

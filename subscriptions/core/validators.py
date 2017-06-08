@@ -14,17 +14,21 @@ class FileValidator(object):
     def __call__(self, value):
         self.filepath = NamedTemporaryFile().name
         self._save_file(value)
-        csv = pd.DataFrame.from_csv(self.filepath, sep=';')
+        extension = value.name.split('.')[-1]
+        if extension == 'csv':
+            dataset = pd.DataFrame.from_csv(self.filepath, sep=';')
+        elif extension == 'xlsx':
+            dataset = pd.read_excel(self.filepath)
 
-        self._validate_columns(csv)
-        self._validate_shirt_size(csv)
+        self._validate_columns(dataset)
+        self._validate_shirt_size(dataset)
 
-    def _validate_columns(self, csv):
+    def _validate_columns(self, dataset):
         message = 'Colunas %(invalid_columns)s invalidas'
         valid_columns = subscriptions.core.models.\
-                Column.objects.filter(file_name__in=set(csv.columns))\
+                Column.objects.filter(file_name__in=set(dataset.columns))\
                 .values_list('file_name', flat=True)
-        invalid_columns = self._invalid_items(csv.columns, valid_columns)
+        invalid_columns = self._invalid_items(dataset.columns, valid_columns)
 
         if invalid_columns:
             raise ValidationError(
@@ -38,18 +42,18 @@ class FileValidator(object):
                 for item in items_for_test
                 if item not in valid_items]
 
-    def _validate_shirt_size(self, csv):
-        def file_shirt_sizes(csv):
+    def _validate_shirt_size(self, dataset):
+        def file_shirt_sizes(dataset):
             shirt_size_columns = subscriptions.core.models.\
                     Column.objects.filter(subscription_name__exact='shirt_size').\
                     values_list('file_name', flat=True)
             file_shirt_size_column = list(
-                set(shirt_size_columns).intersection(csv.columns)
+                set(shirt_size_columns).intersection(dataset.columns)
             )[0]
-            return csv[file_shirt_size_column]
+            return dataset[file_shirt_size_column]
 
         message = 'Tamanhos de Camiseta %(invalid_shirt_sizes)s invalidos'
-        file_shirt_sizes = file_shirt_sizes(csv)
+        file_shirt_sizes = file_shirt_sizes(dataset)
         valid_shirt_sizes = subscriptions.core.models.\
                 ShirtSize.objects.filter(file_shirt_size__in=set(file_shirt_sizes))\
                 .values_list('file_shirt_size', flat=True)

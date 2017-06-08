@@ -56,8 +56,13 @@ class Import(models.Model):
         self._import()
 
     def _import(self):
-        csv = pd.read_csv(self.file.name, sep=';', keep_default_na=False)
-        self._create_subscriptions(csv)
+        extension = self.file.name.split('.')[-1]
+        if extension == 'csv':
+            dataset = pd.read_csv(self.file.name, sep=';', keep_default_na=False)
+        elif extension == 'xlsx':
+            dataset = pd.read_excel(self.file.name, keep_default_na=False)
+
+        self._create_subscriptions(dataset)
 
     def _file_column(self, subscription_name):
         column_filter = self._columns.filter(
@@ -70,9 +75,9 @@ class Import(models.Model):
                                .values_list('subscription_name', flat=True)
         return { column:self._file_column(column) for column in columns }
 
-    def _create_subscriptions(self, csv):
-        self._columns = Column.objects.filter(file_name__in=set(csv.columns))
-        records = csv.to_dict('records')
+    def _create_subscriptions(self, dataset):
+        self._columns = Column.objects.filter(file_name__in=set(dataset.columns))
+        records = dataset.to_dict('records')
         file_columns = self._file_columns()
         model_instances = [self._new_subscription(record, file_columns)
                            for record in records]
