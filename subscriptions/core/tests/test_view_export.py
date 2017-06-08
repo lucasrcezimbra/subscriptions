@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from subscriptions.core.forms import ExportForm
 
-class ExportTest(TestCase):
+class GetExportTest(TestCase):
     def setUp(self):
         self.login_as_staff_user()
         self.response = self.client.get('/export/')
@@ -17,11 +17,6 @@ class ExportTest(TestCase):
         self.client.logout()
         self.response = self.client.get('/export/')
         self.assertEqual(302, self.response.status_code)
-
-    def login_as_staff_user(self):
-        self.credentials = dict(username='admin', password='password')
-        self.user = User.objects.create_user(**self.credentials, is_staff=True)
-        self.client.login(**self.credentials)
 
     def test_html(self):
         expected_contents = (('<form', 1),
@@ -45,3 +40,38 @@ class ExportTest(TestCase):
 
     def test_csrf(self):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
+
+    def login_as_staff_user(self):
+        self.credentials = dict(username='admin', password='password')
+        self.user = User.objects.create_user(**self.credentials, is_staff=True)
+        self.client.login(**self.credentials)
+
+class PostExportTest(TestCase):
+    def setUp(self):
+        self.login_as_staff_user()
+        self.data = dict(format='csv', fields=['id', 'name', 'email'])
+        self.response = self.client.post('/export/', self.data)
+
+    def test_post(self):
+        self.assertEqual(200, self.response.status_code)
+
+    def test_staff_member_required(self):
+        self.client.logout()
+        self.response = self.client.post('/export/', self.data)
+        self.assertEqual(302, self.response.status_code)
+
+    def test_response_content_type_is_csv(self):
+        content_type = 'text/csv'
+        self.assertEquals(content_type, self.response.get('Content-Type'))
+
+    def test_content_is_not_none(self):
+        self.assertTrue(self.response.content)
+
+    def test_file_is_csv(self):
+        extension = self.response.get('Content-Disposition').split('.')[-1]
+        self.assertEqual('csv', extension)
+
+    def login_as_staff_user(self):
+        self.credentials = dict(username='admin', password='password')
+        self.user = User.objects.create_user(**self.credentials, is_staff=True)
+        self.client.login(**self.credentials)
