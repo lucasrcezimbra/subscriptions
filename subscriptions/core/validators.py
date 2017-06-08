@@ -16,9 +16,12 @@ class FileValidator(object):
         self._save_file(value)
         extension = value.name.split('.')[-1]
         if extension == 'csv':
-            dataset = pd.DataFrame.from_csv(self.filepath, sep=';')
+            dataset = pd.read_csv(self.filepath, sep=';', keep_default_na=False)
         elif extension == 'xlsx':
-            dataset = pd.read_excel(self.filepath)
+            dataset = pd.read_excel(self.filepath, keep_default_na=False)
+
+        if 'Unnamed: 0' in dataset.columns:
+            del dataset['Unnamed: 0']
 
         self._validate_columns(dataset)
         self._validate_shirt_size(dataset)
