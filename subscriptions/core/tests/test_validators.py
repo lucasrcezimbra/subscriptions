@@ -3,10 +3,10 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from subscriptions.core.models import Import
 
-TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
-CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
-INVALID_COLUMNS_CSV_PATH = os.path.join(TESTS_PATH, 'columns_invalid.csv')
-INVALID_SHIRT_SIZES_CSV_PATH = os.path.join(TESTS_PATH, 'shirt_sizes_invalid.csv')
+FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
+CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
+INVALID_COLUMNS_CSV_PATH = os.path.join(FILES_PATH, 'columns_invalid.csv')
+INVALID_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'shirt_sizes_invalid.csv')
 
 class ValidateFileTest(TestCase):
     fixtures = ['columns.json', 'shirt_sizes.json',]

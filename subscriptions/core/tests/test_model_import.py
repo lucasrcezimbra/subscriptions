@@ -4,8 +4,8 @@ from django.test import TestCase
 from subscriptions.core.models import Import, Subscription
 from subscriptions.core.validators import validate_file
 
-TESTS_PATH = os.path.dirname(os.path.realpath(__file__))
-CSV_PATH = os.path.join(TESTS_PATH, 'test.csv')
+FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
+CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
 
 class ImportModelTest(TestCase):
     fixtures = ['columns.json', 'shirt_sizes.json']
@@ -73,7 +73,7 @@ class ImportModelTest(TestCase):
     def test_import_get_file_columns_names(self):
         import_ = Import.objects.create(
             origin='Sprint Final',
-            file=os.path.join(TESTS_PATH, 'test2.csv')
+            file=os.path.join(FILES_PATH, 'test2.csv')
         )
         fields = (
             ('name','Lucas Rangel Cezimbra 1'),
