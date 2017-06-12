@@ -96,7 +96,7 @@ class Import(models.Model):
             params['shirt_size'] = shirt_size
         if type(params['date_of_birth']) == str:
             params['date_of_birth'] = datetime.strptime(
-                params['date_of_birth'],'%d/%m/%Y'
+                params['date_of_birth'].strip(),'%d/%m/%Y'
             ).date()
         params['import_t'] = self
 
