@@ -37,7 +37,7 @@ class Subscription(models.Model):
     team = models.CharField('equipe', max_length=100, blank=True)
     modality = models.CharField('modalidade', max_length=25)
     shirt_size = models.CharField('tamanho da camiseta',
-                                  max_length=20, choices=SHIRT_SIZES)
+                                  max_length=20, choices=SHIRT_SIZES, blank=True)
     import_t = models.ForeignKey('Import',
                                  on_delete=models.CASCADE, null=True, blank=True)
 
@@ -87,11 +87,12 @@ class Import(models.Model):
         Subscription.objects.bulk_create(model_instances)
 
     def _new_subscription(self, record, file_columns):
-        shirt_size = ShirtSize.objects.get(
-            file_shirt_size__exact=record[file_columns['shirt_size']]
-        )
+        if file_columns.get('shirt_size'):
+            shirt_size = ShirtSize.objects.get(
+                file_shirt_size__exact=record[file_columns['shirt_size']]
+            )
         params = {column:record[file_columns[column]] for column in file_columns}
-        if params['shirt_size']:
+        if params.get('shirt_size'):
             params['shirt_size'] = shirt_size
         if type(params['date_of_birth']) == str:
             params['date_of_birth'] = datetime.strptime(

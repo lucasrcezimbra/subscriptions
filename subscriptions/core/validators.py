@@ -50,10 +50,12 @@ class FileValidator(object):
             shirt_size_columns = subscriptions.core.models.\
                     Column.objects.filter(subscription_name__exact='shirt_size').\
                     values_list('file_name', flat=True)
-            file_shirt_size_column = list(
-                set(shirt_size_columns).intersection(dataset.columns)
-            )[0]
-            return dataset[file_shirt_size_column]
+            columns_intersection = set(shirt_size_columns).intersection(dataset.columns)
+            if columns_intersection:
+                file_shirt_size_column = list(columns_intersection)[0]
+                return dataset[file_shirt_size_column]
+            else:
+                return []
 
         message = 'Tamanhos de Camiseta %(invalid_shirt_sizes)s invalidos'
         file_shirt_sizes = file_shirt_sizes(dataset)
