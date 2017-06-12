@@ -46,22 +46,7 @@ class ImportModelTest(TestCase):
         self.assertTrue(Import.objects.exists())
 
     def test_import_correct_csv_values(self):
-        fields = (
-            ('name','Lucas Rangel Cezimbra 1'),
-            ('email', 'lucas.cezimbra@gmail.com'),
-            ('name_for_bib_number', 'Lucas 1'),
-            ('gender', 'M'),
-            ('date_of_birth', date(1996, 8, 12)),
-            ('city', 'Porto Alegre'),
-            ('team', 'Sprint Final'),
-            ('shirt_size', 'BL'),
-            ('modality', '1km'),
-        )
-        subscription = Subscription.objects.first()
-        for field, expected in fields:
-            with self.subTest():
-                value = getattr(subscription, field)
-                self.assertEqual(value, expected)
+        self._test_first_subscription_fields()
 
     def test_str(self):
         self.assertEqual('Sprint Final', str(self.import_))
@@ -71,80 +56,32 @@ class ImportModelTest(TestCase):
                          Import.file.field._validators)
 
     def test_import_get_file_columns_names(self):
-        import_ = Import.objects.create(
-            origin='Sprint Final',
-            file=os.path.join(FILES_PATH, 'test2.csv')
-        )
-        fields = (
-            ('name','Lucas Rangel Cezimbra 1'),
-            ('email', 'lucas.cezimbra@gmail.com'),
-            ('name_for_bib_number', 'Lucas 1'),
-            ('gender', 'M'),
-            ('date_of_birth', date(1996, 8, 12)),
-            ('city', 'Porto Alegre'),
-            ('team', 'Sprint Final'),
-            ('shirt_size', 'BL'),
-            ('modality', '1km'),
-        )
-        subscription = Subscription.objects.first()
-        for field, expected in fields:
-            with self.subTest():
-                value = getattr(subscription, field)
-                self.assertEqual(value, expected)
+        self._create_import('test2.csv')
+        self._test_first_subscription_fields()
 
     def test_xlsx(self):
         '''Should works with XLSX'''
-        import_ = Import.objects.create(
-            origin='Sprint Final',
-            file=os.path.join(FILES_PATH, 'test.xlsx')
-        )
-        fields = (
-            ('name','Lucas Rangel Cezimbra 1'),
-            ('email', 'lucas.cezimbra@gmail.com'),
-            ('name_for_bib_number', 'Lucas 1'),
-            ('gender', 'M'),
-            ('date_of_birth', date(1996, 8, 12)),
-            ('city', 'Porto Alegre'),
-            ('team', 'Sprint Final'),
-            ('shirt_size', 'BL'),
-            ('modality', '1km'),
-        )
-        subscription = Subscription.objects.first()
-        for field, expected in fields:
-            with self.subTest():
-                value = getattr(subscription, field)
-                self.assertEqual(value, expected)
+        self._create_import('test.xlsx')
+        self._test_first_subscription_fields()
 
     def test_xls(self):
-        '''Should works with XLSX'''
-        import_ = Import.objects.create(
-            origin='Sprint Final',
-            file=os.path.join(FILES_PATH, 'test.xls')
-        )
-        fields = (
-            ('name','Lucas Rangel Cezimbra 1'),
-            ('email', 'lucas.cezimbra@gmail.com'),
-            ('name_for_bib_number', 'Lucas 1'),
-            ('gender', 'M'),
-            ('date_of_birth', date(1996, 8, 12)),
-            ('city', 'Porto Alegre'),
-            ('team', 'Sprint Final'),
-            ('shirt_size', 'BL'),
-            ('modality', '1km'),
-        )
-        subscription = Subscription.objects.first()
-        for field, expected in fields:
-            with self.subTest():
-                value = getattr(subscription, field)
-                self.assertEqual(value, expected)
+        '''Should works with XLS'''
+        self._create_import('test.xls')
+        self._test_first_subscription_fields()
 
     def test_import_without_shirt_sizes(self):
         '''Should works without shirt size column'''
+        self._create_import('without_shirt_size.csv')
+        self._test_first_subscription_fields()
+
+    def _create_import(self, filename, origin='Origem'):
         import_ = Import.objects.create(
-            origin='Sprint Final',
-            file=os.path.join(FILES_PATH, 'without_shirt_size.csv')
+            origin=origin,
+            file=os.path.join(FILES_PATH, filename)
         )
-        fields = (
+
+    def _test_first_subscription_fields(self):
+        return (
             ('name','Lucas Rangel Cezimbra 1'),
             ('email', 'lucas.cezimbra@gmail.com'),
             ('name_for_bib_number', 'Lucas 1'),
