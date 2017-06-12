@@ -6,6 +6,7 @@ from subscriptions.core.models import Import
 FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
 XLSX_PATH = os.path.join(FILES_PATH, 'test.xlsx')
+XLS_PATH = os.path.join(FILES_PATH, 'test.xls')
 INVALID_COLUMNS_CSV_PATH = os.path.join(FILES_PATH, 'columns_invalid.csv')
 INVALID_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'shirt_sizes_invalid.csv')
 WITHOUT_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'without_shirt_size.csv')
@@ -15,6 +16,7 @@ class ValidateFileTest(TestCase):
     def setUp(self):
         self.valid_import = Import(origin='Sprint Final',file=CSV_PATH)
         self.valid_import_xlsx = Import(origin='Sprint Final',file=XLSX_PATH)
+        self.valid_import_xls = Import(origin='Sprint Final',file=XLS_PATH)
         self.invalid_column_import = Import(
             origin='Sprint Final',
             file=INVALID_COLUMNS_CSV_PATH
@@ -45,6 +47,9 @@ class ValidateFileTest(TestCase):
 
     def test_columns_valid_xlsx(self):
         self.assertIsNone(self.valid_import_xlsx.full_clean())
+
+    def test_columns_valid_xls(self):
+        self.assertIsNone(self.valid_import_xls.full_clean())
 
     def test_shirt_sizes_invalid(self):
         invalid_shirt_sizes = set(["Errado", "Inválido"])

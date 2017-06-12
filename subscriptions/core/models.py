@@ -61,7 +61,7 @@ class Import(models.Model):
         extension = self.file.name.split('.')[-1]
         if extension == 'csv':
             dataset = pd.read_csv(self.file.name, sep=';', keep_default_na=False)
-        elif extension == 'xlsx':
+        elif extension in ('xls', 'xlsx'):
             dataset = pd.read_excel(self.file.name, keep_default_na=False)
 
         self._create_subscriptions(dataset)

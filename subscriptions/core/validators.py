@@ -17,7 +17,7 @@ class FileValidator(object):
         extension = value.name.split('.')[-1]
         if extension == 'csv':
             dataset = pd.read_csv(self.filepath, sep=';', keep_default_na=False)
-        elif extension == 'xlsx':
+        elif extension in ('xlsx','xls'):
             dataset = pd.read_excel(self.filepath, keep_default_na=False)
 
         if 'Unnamed: 0' in dataset.columns:
