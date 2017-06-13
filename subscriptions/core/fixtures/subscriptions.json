@@ -1,0 +1,82 @@
+[
+{
+    "model": "core.subscription",
+    "pk": 1,
+    "fields": {
+        "name": "Lucas Rangel Cezimbra 1",
+        "email": "lucas.cezimbra@gmail.com",
+        "name_for_bib_number": "Lucas 1",
+        "gender": "M",
+        "date_of_birth": "1996-08-12",
+        "city": "Porto Alegre",
+        "team": "Sprint Final",
+        "modality": "1km",
+        "shirt_size": "BL",
+        "import_t": null
+    }
+},
+{
+    "model": "core.subscription",
+    "pk": 2,
+    "fields": {
+        "name": "Lucas Rangel Cezimbra 2",
+        "email": "lucas.cezimbra@gmail.com",
+        "name_for_bib_number": "Lucas 2",
+        "gender": "M",
+        "date_of_birth": "1996-08-13",
+        "city": "Porto Alegre",
+        "team": "Sprint Final",
+        "modality": "2km",
+        "shirt_size": "M",
+        "import_t": null
+    }
+},
+{
+    "model": "core.subscription",
+    "pk": 3,
+    "fields": {
+        "name": "Lucas Rangel Cezimbra 3",
+        "email": "lucas.cezimbra@gmail.com",
+        "name_for_bib_number": "Lucas 3",
+        "gender": "M",
+        "date_of_birth": "1996-08-14",
+        "city": "Porto Alegre",
+        "team": "Sprint Final",
+        "modality": "3km",
+        "shirt_size": "G",
+        "import_t": null
+    }
+},
+{
+    "model": "core.subscription",
+    "pk": 4,
+    "fields": {
+        "name": "Lucas Rangel Cezimbra 4",
+        "email": "lucas.cezimbra@gmail.com",
+        "name_for_bib_number": "Lucas 4",
+        "gender": "M",
+        "date_of_birth": "1996-08-15",
+        "city": "Porto Alegre",
+        "team": "Sprint Final",
+        "modality": "4km",
+        "shirt_size": "GG",
+        "import_t": null
+    }
+},
+{
+    "model": "core.subscription",
+    "pk": 5,
+    "fields": {
+        "name": "Lucas Rangel Cezimbra 5",
+        "email": "",
+        "name_for_bib_number": "Lucas 5",
+        "gender": "M",
+        "date_of_birth": "1996-08-16",
+        "city": "Porto Alegre",
+        "team": "Sprint Final",
+        "modality": "5km",
+        "shirt_size": "P",
+        "import_t": null
+    }
+}
+]

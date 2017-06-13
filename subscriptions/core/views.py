@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -15,10 +16,10 @@ def export(request):
         if not form.is_valid():
             return render(request, 'export.html', {'form': form})
 
-        return file_export_response(form.data.get('format'),
+        return _file_export_response(form.data.get('format'),
                                     form.data.getlist('fields'))
 
-def file_export_response(format, fields):
+def _file_export_response(format, fields):
     subscription_resource = SubscriptionResource(fields)
     content_disposition = "attachment; filename*=utf-8''{}"
     response = HttpResponse()
@@ -50,3 +51,9 @@ def SubscriptionResource(include_fields=[], *args, **kwargs):
             super(SubscriptionResource, self).__init__(*args, **kwargs)
 
     return SubscriptionResource()
+
+@staff_member_required
+def shirt_sizes(request):
+    shirt_sizes = Subscription.objects.values('shirt_size')\
+                    .annotate(count=Count('shirt_size'))
+    return render(request, 'shirt_sizes.html', {'shirt_sizes': shirt_sizes})
