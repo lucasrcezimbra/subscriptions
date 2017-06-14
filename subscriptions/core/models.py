@@ -49,6 +49,7 @@ class Subscription(models.Model):
 class Import(models.Model):
     origin = models.CharField('origem',max_length=100)
     file = models.FileField(validators=[validate_file])
+    date_format = models.CharField('formato da data', max_length=15, blank=True, null=True, default='%d/%m/%Y')
 
     def __str__(self):
         return str(self.origin)
@@ -96,7 +97,7 @@ class Import(models.Model):
             params['shirt_size'] = shirt_size
         if type(params['date_of_birth']) == str:
             params['date_of_birth'] = datetime.strptime(
-                params['date_of_birth'].strip(),'%d/%m/%Y'
+                params['date_of_birth'].strip(), self.date_format
             ).date()
         params['import_t'] = self
 

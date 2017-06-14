@@ -74,14 +74,23 @@ class ImportModelTest(TestCase):
         self._create_import('without_shirt_size.csv')
         self._test_first_subscription_fields()
 
-    def _create_import(self, filename, origin='Origem'):
+    def test_accept_formats_for_date_of_birth(self):
+        '''
+        12/08/1996
+        12.08.1996
+        '''
+        self._create_import('date_format.csv', date_format='%d.%m.%Y')
+        self._test_first_subscription_fields()
+
+    def _create_import(self, filename, date_format='%d/%m/%Y', origin='Origem'):
         import_ = Import.objects.create(
             origin=origin,
-            file=os.path.join(FILES_PATH, filename)
+            file=os.path.join(FILES_PATH, filename),
+            date_format=date_format,
         )
 
     def _test_first_subscription_fields(self):
-        return (
+        fields = (
             ('name','Lucas Rangel Cezimbra 1'),
             ('email', 'lucas.cezimbra@gmail.com'),
             ('name_for_bib_number', 'Lucas 1'),
