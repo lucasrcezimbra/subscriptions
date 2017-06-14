@@ -18,7 +18,6 @@ from django.contrib import admin
 from subscriptions.core.views import export, shirt_sizes
 
 urlpatterns = [
-    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^export/', export),
     url(r'^camisetas/', shirt_sizes),
