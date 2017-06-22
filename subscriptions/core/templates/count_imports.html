@@ -9,7 +9,9 @@
     {% for i in imports_count %}
     <li>{{ i.import_t__origin }}: {{ i.count }}</li>
     {% endfor %}
+    {% if without_imports_count %}
     <li>Avulso: {{ without_imports_count }}</li>
+    {% endif %}
     <li><strong>Total: {{ total }}</strong></li>
   </ul>
 </body>

@@ -54,6 +54,11 @@ class GetSubscriptionsCountTest(TestCase):
             with self.subTest():
                 self.assertContains(self.response, expected)
 
+    def test_html_if_dont_have_without_import(self):
+        Subscription.objects.all().delete()
+        self.response = self.client.get('/quantidade_inscritos/')
+        self.assertNotContains(self.response, 'Avulso: 0')
+
     def login_as_staff_user(self):
         self.credentials = dict(username='admin', password='password')
         self.user = User.objects.create_user(**self.credentials, is_staff=True)
