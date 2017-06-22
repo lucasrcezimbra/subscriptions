@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <ul>
+    {% for i in imports_count %}
+    <li>{{ i.import_t__origin }}: {{ i.count }}</li>
+    {% endfor %}
+    <li>Avulso: {{ without_imports_count }}</li>
+    <li><strong>Total: {{ total }}</strong></li>
+  </ul>
+</body>
+</html>

@@ -57,3 +57,20 @@ def shirt_sizes(request):
     shirt_sizes = Subscription.objects.values('shirt_size')\
                     .annotate(count=Count('shirt_size'))
     return render(request, 'shirt_sizes.html', {'shirt_sizes': shirt_sizes})
+
+@staff_member_required
+def count_subscriptions(request):
+    imports_count = Subscription.objects\
+                        .filter(import_t__gt=0)\
+                        .values('import_t__origin')\
+                        .annotate(count=Count('import_t'))
+    without_imports_count = Subscription.objects\
+                                .filter(import_t__exact=None)\
+                                .count()
+    total = sum([ic['count'] for ic in imports_count]) + without_imports_count
+    context = {
+        'imports_count': imports_count,
+        'without_imports_count': without_imports_count,
+        'total': total
+    }
+    return render(request, 'count_imports.html', context)
