@@ -26,3 +26,5 @@ class SubscriptionTest(TestCase):
             self.subscription.save()
         self.assertFalse(Subscription.objects.exists())
 
+    def test_str(self):
+        self.assertEqual(self.subscription.name, str(self.subscription))

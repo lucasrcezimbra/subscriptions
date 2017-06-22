@@ -45,6 +45,9 @@ class Subscription(models.Model):
         self.full_clean()
         super(Subscription, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Import(models.Model):
     origin = models.CharField('origem',max_length=100)
