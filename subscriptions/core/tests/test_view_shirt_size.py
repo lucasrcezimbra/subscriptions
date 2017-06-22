@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-class GetExportTest(TestCase):
+class GetShirtSizesCountTest(TestCase):
     def setUp(self):
         for shirt_size in ('P', 'M', 'G', 'GG', 'BL'):
             mommy.make('Subscription', shirt_size=shirt_size)

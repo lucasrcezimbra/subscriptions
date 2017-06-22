@@ -53,9 +53,9 @@ class Subscription(models.Model):
     date_of_birth = models.DateField('data de nascimento')
     city = models.CharField('cidade', max_length=100, blank=True)
     team = models.CharField('equipe', max_length=100, blank=True)
-    modality = models.CharField('modalidade', max_length=25, choices=MODALITIES)
+    modality = models.CharField('modalidade', max_length=2, choices=MODALITIES)
     shirt_size = models.CharField('tamanho da camiseta',
-                                  max_length=20, choices=SHIRT_SIZES, blank=True)
+                                  max_length=5, choices=SHIRT_SIZES, blank=True)
     import_t = models.ForeignKey('Import',
                                  on_delete=models.CASCADE, null=True, blank=True)
 
@@ -126,6 +126,7 @@ class Import(models.Model):
 
         subscription = Subscription(**params)
         subscription.full_clean()
+        import pdb; pdb.set_trace()
         return subscription
 
 
@@ -170,7 +171,7 @@ class ShirtSize(models.Model):
 
 
 class Modality(models.Model):
-    modality = models.CharField('modalidade', max_length=1, choices=MODALITIES)
+    modality = models.CharField('modalidade', max_length=2, choices=MODALITIES)
     file_modality = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
