@@ -25,6 +25,7 @@ class FileValidator(object):
 
         self._validate_columns(dataset)
         self._validate_shirt_size(dataset)
+        self._validate_modalities(dataset)
 
     def _validate_columns(self, dataset):
         message = 'Colunas %(invalid_columns)s invalidas'
@@ -69,6 +70,32 @@ class FileValidator(object):
                 message,
                 code='shirt_size',
                 params={'invalid_shirt_sizes': set(invalid_shirt_sizes)}
+            )
+
+    def _validate_modalities(self, dataset):
+        def file_modalities(dataset):
+            modality_columns = subscriptions.core.models.\
+                    Column.objects.filter(subscription_name__exact='modality').\
+                    values_list('file_name', flat=True)
+            columns_intersection = set(modality_columns).intersection(dataset.columns)
+            if columns_intersection:
+                file_modality_column = list(columns_intersection)[0]
+                return dataset[file_modality_column]
+            else:
+                return []
+
+        message = 'Modalidades %(invalid_modalities)s invalidas'
+        file_modalities = file_modalities(dataset)
+        valid_modalities = subscriptions.core.models.\
+                Modality.objects.filter(file_modality__in=set(file_modalities))\
+                .values_list('file_modality', flat=True)
+        invalid_modalities = self._invalid_items(file_modalities, valid_modalities)
+
+        if invalid_modalities:
+            raise ValidationError(
+                message,
+                code='modality',
+                params={'invalid_modalities': set(invalid_modalities)}
             )
 
     def __eq__(self, other):

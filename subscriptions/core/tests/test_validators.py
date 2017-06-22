@@ -10,9 +10,10 @@ XLS_PATH = os.path.join(FILES_PATH, 'test.xls')
 INVALID_COLUMNS_CSV_PATH = os.path.join(FILES_PATH, 'columns_invalid.csv')
 INVALID_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'shirt_sizes_invalid.csv')
 WITHOUT_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'without_shirt_size.csv')
+INVALID_MODALITIES_CSV_PATH = os.path.join(FILES_PATH, 'modalities_invalid.csv')
 
 class ValidateFileTest(TestCase):
-    fixtures = ['columns.json', 'shirt_sizes.json',]
+    fixtures = ['columns.json', 'modalities.json', 'shirt_sizes.json',]
     def setUp(self):
         self.valid_import = Import(origin='Sprint Final',file=CSV_PATH)
         self.valid_import_xlsx = Import(origin='Sprint Final',file=XLSX_PATH)
@@ -24,6 +25,10 @@ class ValidateFileTest(TestCase):
         self.invalid_shirt_sizes_import = Import(
             origin='Sprint Final',
             file=INVALID_SHIRT_SIZES_CSV_PATH
+        )
+        self.invalid_modelities_import = Import(
+            origin='Sprint Final',
+            file=INVALID_MODALITIES_CSV_PATH
         )
         self.without_shirt_sizes_import = Import(
             origin='Sprint Final',
@@ -62,3 +67,12 @@ class ValidateFileTest(TestCase):
 
     def test_without_shirt_size_columns(self):
         self.assertIsNone(self.without_shirt_sizes_import.full_clean())
+
+    def test_modalities_invalid(self):
+        invalid_modalities = set(["Invalid", "Error"])
+        expected_message = ['Modalidades {} invalidas'\
+                            .format(invalid_modalities)]
+        expected_error = str({'file': expected_message })
+
+        with self.assertRaisesMessage(ValidationError, expected_error):
+            self.invalid_modelities_import.full_clean()
