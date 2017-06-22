@@ -2,25 +2,22 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from subscriptions.core.models import Column
 
+from model_mommy import mommy
+
 class ColumnTest(TestCase):
     def setUp(self):
-        self.column = Column(
-            subscription_name='name',
-            file_name='*Nome Completo',
-        )
+        self.column = mommy.prepare(Column)
 
     def test_create(self):
         self.column.save()
         self.assertTrue(Column.objects.exists())
 
     def test_invalid_column_name(self):
-        column = Column(
-            subscription_name='invalid_column',
-            file_name='*Nome Completo',
-        )
+        column = mommy.prepare(Column, subscription_name='invalid_column')
+
         with self.assertRaises(ValidationError):
             column.save()
         self.assertFalse(Column.objects.exists())
 
     def test_str(self):
-        self.assertEqual('*Nome Completo', str(self.column))
+        self.assertEqual(self.column.file_name, str(self.column))

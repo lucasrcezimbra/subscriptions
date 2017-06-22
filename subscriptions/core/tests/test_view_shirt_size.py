@@ -1,10 +1,13 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-class GetExportTest(TestCase):
-    fixtures = ['subscriptions']
+from model_mommy import mommy
 
+class GetExportTest(TestCase):
     def setUp(self):
+        for shirt_size in ('P', 'M', 'G', 'GG', 'BL'):
+            mommy.make('Subscription', shirt_size=shirt_size)
+
         self.login_as_staff_user()
         self.response = self.client.get('/camisetas/')
 

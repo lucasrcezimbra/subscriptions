@@ -4,6 +4,8 @@ from django.test import TestCase
 from subscriptions.core.models import Import, Subscription
 from subscriptions.core.validators import validate_file
 
+from model_mommy import mommy
+
 FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
 
@@ -20,20 +22,7 @@ class ImportModelTest(TestCase):
         self.assertTrue(Import.objects.exists())
 
     def test_delete_subscriptions_when_delete_import(self):
-        for i in range(5):
-            Subscription.objects.create(
-                name='Lucas Rangel Cezimbra',
-                email='lucas.cezimbra@gmail.com',
-                name_for_bib_number='Lucas',
-                gender='M',
-                date_of_birth='1996-08-12',
-                city='Porto Alegre',
-                team='Sprint Final',
-                shirt_size='P',
-                modality='5km',
-                import_t=self.import_,
-            )
-
+        mommy.make(Subscription, import_t=self.import_, _quantity=5)
         self.import_.delete()
         self.assertTrue(not Subscription.objects.exists())
 

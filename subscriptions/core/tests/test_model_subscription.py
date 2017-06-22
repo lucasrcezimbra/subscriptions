@@ -2,19 +2,11 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from subscriptions.core.models import ShirtSize, Subscription
 
+from model_mommy import mommy
+
 class SubscriptionTest(TestCase):
     def setUp(self):
-        self.subscription = Subscription(
-            name='Lucas Rangel Cezimbra',
-            email='lucas.cezimbra@gmail.com',
-            name_for_bib_number='Lucas',
-            gender='M',
-            date_of_birth='1996-08-12',
-            city='Porto Alegre',
-            team='Sprint Final',
-            shirt_size='P',
-            modality='5km',
-        )
+        self.subscription = mommy.prepare(Subscription)
 
     def test_create(self):
         self.subscription.save()
