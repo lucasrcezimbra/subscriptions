@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.test import TestCase
-from subscriptions.core.admin import ColumnModelAdmin, ImportModelAdmin, ShirtSizeModelAdmin, SubscriptionModelAdmin
-from subscriptions.core.models import Column, Import, ShirtSize, Subscription
+from subscriptions.core.admin import ColumnModelAdmin, ImportModelAdmin,\
+                                     ModalityModelAdmin, ShirtSizeModelAdmin,\
+                                     SubscriptionModelAdmin
+from subscriptions.core.models import Column, Import, Modality, ShirtSize,\
+                                      Subscription
 from unittest.mock import Mock
 
 class SubscriptionModelAdminTest(TestCase):
@@ -89,6 +92,27 @@ class ShirtSizeAdminTest(TestCase):
     def test_attr(self):
         attrs = [
             ('list_display', ('shirt_size', 'file_shirt_size',)),
+        ]
+
+        for attr, expected in attrs:
+            with self.subTest():
+                self.assertEqual(expected, getattr(self.model_admin, attr))
+
+class ModalityAdminTest(TestCase):
+    def setUp(self):
+        self.model_admin = ModalityModelAdmin(Modality, admin.site)
+
+    def test_model_admin(self):
+        self.assertIsInstance(self.model_admin, ModalityModelAdmin)
+
+    def test_is_registered_in_admin(self):
+        self.assertTrue(admin.site.is_registered(Modality))
+        self.assertIsInstance(admin.site._registry[Modality],
+                              ModalityModelAdmin)
+
+    def test_attr(self):
+        attrs = [
+            ('list_display', ('modality', 'file_modality',)),
         ]
 
         for attr, expected in attrs:
