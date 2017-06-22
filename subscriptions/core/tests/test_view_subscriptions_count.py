@@ -36,13 +36,18 @@ class GetSubscriptionsCountTest(TestCase):
     def test_template(self):
         self.assertTemplateUsed(self.response, 'count_imports.html')
 
-    def test_context(self):
+    def test_context_imports_count(self):
         context = self.response.context['imports_count']
-        context2 = self.response.context['without_imports_count']
-        context_total = self.response.context['total']
         self.assertIsInstance(context, QuerySet)
-        self.assertEqual(context2, self.without_imports_quantity)
-        self.assertEqual(context_total, 15)
+
+    def test_context_without_import_count(self):
+        context = self.response.context['without_imports_count']
+        self.assertEqual(context, self.without_imports_quantity)
+
+    def test_context_total(self):
+        expected_total = Subscription.objects.count()
+        total = self.response.context['total']
+        self.assertEqual(total, expected_total)
 
     def test_html(self):
         expected_contents = (
