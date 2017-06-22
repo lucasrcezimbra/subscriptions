@@ -12,7 +12,7 @@ FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
 
 class GetSubscriptionsCountTest(TestCase):
-    fixtures = ['columns.json', 'shirt_sizes.json']
+    fixtures = ['columns.json', 'modalities.json', 'shirt_sizes.json']
 
     def setUp(self):
         import_ = Import.objects.create(

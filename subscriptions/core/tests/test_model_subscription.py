@@ -26,5 +26,11 @@ class SubscriptionTest(TestCase):
             self.subscription.save()
         self.assertFalse(Subscription.objects.exists())
 
+    def test_invalid_modality_choice(self):
+        self.subscription.modality = 'INVALID'
+        with self.assertRaises(ValidationError):
+            self.subscription.save()
+        self.assertFalse(Subscription.objects.exists())
+
     def test_str(self):
         self.assertEqual(self.subscription.name, str(self.subscription))

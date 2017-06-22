@@ -1,0 +1,42 @@
+[
+{
+    "model": "core.modality",
+    "pk": 1,
+    "fields": {
+        "modality": "1",
+        "file_modality": "1km"
+    }
+},
+{
+    "model": "core.modality",
+    "pk": 2,
+    "fields": {
+        "modality": "2",
+        "file_modality": "2km"
+    }
+},
+{
+    "model": "core.modality",
+    "pk": 3,
+    "fields": {
+        "modality": "3",
+        "file_modality": "3km"
+    }
+},
+{
+    "model": "core.modality",
+    "pk": 4,
+    "fields": {
+        "modality": "4",
+        "file_modality": "4km"
+    }
+},
+{
+    "model": "core.modality",
+    "pk": 5,
+    "fields": {
+        "modality": "5",
+        "file_modality": "5km"
+    }
+}
+]

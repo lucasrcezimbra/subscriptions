@@ -10,7 +10,7 @@ FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
 
 class ImportModelTest(TestCase):
-    fixtures = ['columns.json', 'shirt_sizes.json']
+    fixtures = ['columns.json', 'modalities.json', 'shirt_sizes.json']
 
     def setUp(self):
         self.import_ = Import.objects.create(
@@ -88,7 +88,7 @@ class ImportModelTest(TestCase):
             ('city', 'Porto Alegre'),
             ('team', 'Sprint Final'),
             ('shirt_size', 'BL'),
-            ('modality', '1km'),
+            ('modality', '1'),
         )
         subscription = Subscription.objects.first()
         for field, expected in fields:

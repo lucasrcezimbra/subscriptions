@@ -1,6 +1,8 @@
 import os
 import pandas as pd
+
 from datetime import datetime
+
 from django.db import models
 from subscriptions.core.validators import validate_file
 
@@ -21,6 +23,22 @@ SHIRT_SIZES = (
     ('VAZIO', 'VAZIO')
 )
 
+MODALITIES = (
+    ('1', '1km'),
+    ('2', '2km'),
+    ('3', '3km'),
+    ('4', '4km'),
+    ('5', '5km'),
+    ('6', '6km'),
+    ('7', '7km'),
+    ('8', '8km'),
+    ('9', '9km'),
+    ('10', '10km'),
+    ('I', 'Infantil'),
+    ('J', 'Juvenil'),
+    ('C', 'Caminhada'),
+)
+
 class Subscription(models.Model):
     GENDERS = (
         ('F', 'Feminino'),
@@ -35,7 +53,7 @@ class Subscription(models.Model):
     date_of_birth = models.DateField('data de nascimento')
     city = models.CharField('cidade', max_length=100, blank=True)
     team = models.CharField('equipe', max_length=100, blank=True)
-    modality = models.CharField('modalidade', max_length=25)
+    modality = models.CharField('modalidade', max_length=25, choices=MODALITIES)
     shirt_size = models.CharField('tamanho da camiseta',
                                   max_length=20, choices=SHIRT_SIZES, blank=True)
     import_t = models.ForeignKey('Import',
@@ -91,13 +109,15 @@ class Import(models.Model):
         Subscription.objects.bulk_create(model_instances)
 
     def _new_subscription(self, record, file_columns):
-        if file_columns.get('shirt_size'):
-            shirt_size = ShirtSize.objects.get(
+        params = {column:record[file_columns[column]] for column in file_columns}
+        if params.get('modality'):
+            params['modality'] = Modality.objects.get(
+                file_modality__exact=record[file_columns['modality']]
+            )
+        if params.get('shirt_size'):
+            params['shirt_size'] = ShirtSize.objects.get(
                 file_shirt_size__exact=record[file_columns['shirt_size']]
             )
-        params = {column:record[file_columns[column]] for column in file_columns}
-        if params.get('shirt_size'):
-            params['shirt_size'] = shirt_size
         if type(params['date_of_birth']) == str:
             params['date_of_birth'] = datetime.strptime(
                 params['date_of_birth'].strip(), self.date_format
@@ -133,6 +153,7 @@ class Column(models.Model):
     def __str__(self):
         return str(self.file_name)
 
+
 class ShirtSize(models.Model):
     shirt_size = models.CharField('camiseta', max_length=10, choices=SHIRT_SIZES)
     file_shirt_size = models.CharField(max_length=100, primary_key=True)
@@ -146,3 +167,15 @@ class ShirtSize(models.Model):
 
     def __eq__(self, other):
         return other == self.shirt_size
+
+
+class Modality(models.Model):
+    modality = models.CharField('modalidade', max_length=1, choices=MODALITIES)
+    file_modality = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Modality, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.modality)
