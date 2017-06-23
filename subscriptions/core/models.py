@@ -126,7 +126,6 @@ class Import(models.Model):
 
         subscription = Subscription(**params)
         subscription.full_clean()
-        import pdb; pdb.set_trace()
         return subscription
 
 

@@ -74,3 +74,14 @@ def count_subscriptions(request):
         'total': total
     }
     return render(request, 'count_imports.html', context)
+
+@staff_member_required
+def count_modalities(request):
+    modalities_count = Subscription.objects.values('modality')\
+                    .annotate(count=Count('modality'))
+    total = Subscription.objects.count()
+    context = {
+        'modalities': modalities_count,
+        'total': total,
+    }
+    return render(request, 'count_modalities.html', context)

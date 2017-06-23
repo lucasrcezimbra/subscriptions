@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  {% for modality in modalities %}
+  <li>{{ modality.modality }}: {{ modality.count }}</li>
+  {% endfor %}
+  <li><strong>Total: {{ total }}</strong></li>
+</body>
+</html>

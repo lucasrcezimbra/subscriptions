@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from subscriptions.core.views import export, shirt_sizes, count_subscriptions
+from subscriptions.core.views import export, shirt_sizes, count_subscriptions, count_modalities
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^export/', export),
     url(r'^camisetas/', shirt_sizes),
     url(r'^quantidade_inscritos/', count_subscriptions),
+    url(r'^quantidade-modalidades/', count_modalities),
 ]
