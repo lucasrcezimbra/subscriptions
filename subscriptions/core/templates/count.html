@@ -6,11 +6,11 @@
 </head>
 <body>
   <ul>
-    {% for i in imports_count %}
-    <li>{{ i.import_t__origin }}: {{ i.count }}</li>
+    {% for name,count in counter %}
+    <li>{{ name }}: {{ count }}</li>
     {% endfor %}
-    {% if without_imports_count %}
-    <li>Avulso: {{ without_imports_count }}</li>
+    {% if alone %}
+    <li>Avulso: {{ alone }}</li>
     {% endif %}
     <li><strong>Total: {{ total }}</strong></li>
   </ul>

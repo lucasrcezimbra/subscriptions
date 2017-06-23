@@ -23,25 +23,25 @@ class GetSubscriptionsCountTest(TestCase):
         mommy.make(Subscription, _quantity=self.without_imports_quantity)
 
         self.login_as_staff_user()
-        self.response = self.client.get('/quantidade_inscritos/')
+        self.response = self.client.get('/quantidade-inscritos/')
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_staff_member_required(self):
         self.client.logout()
-        self.response = self.client.get('/quantidade_inscritos/')
+        self.response = self.client.get('/quantidade-inscritos/')
         self.assertEqual(302, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'count_imports.html')
+        self.assertTemplateUsed(self.response, 'count.html')
 
     def test_context_imports_count(self):
-        context = self.response.context['imports_count']
+        context = self.response.context['counter']
         self.assertIsInstance(context, QuerySet)
 
     def test_context_without_import_count(self):
-        context = self.response.context['without_imports_count']
+        context = self.response.context['alone']
         self.assertEqual(context, self.without_imports_quantity)
 
     def test_context_total(self):
@@ -61,7 +61,7 @@ class GetSubscriptionsCountTest(TestCase):
 
     def test_html_if_dont_have_without_import(self):
         Subscription.objects.all().delete()
-        self.response = self.client.get('/quantidade_inscritos/')
+        self.response = self.client.get('/quantidade-inscritos/')
         self.assertNotContains(self.response, 'Avulso: 0')
 
     def login_as_staff_user(self):

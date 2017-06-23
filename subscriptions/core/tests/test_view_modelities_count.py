@@ -20,7 +20,7 @@ class GetModelitiesCountTest(TestCase):
         self.assertEqual(200, self.response.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'count_modalities.html')
+        self.assertTemplateUsed(self.response, 'count.html')
 
     def test_staff_member_required(self):
         self.client.logout()

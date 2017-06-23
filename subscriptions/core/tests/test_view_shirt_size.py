@@ -9,17 +9,17 @@ class GetShirtSizesCountTest(TestCase):
             mommy.make('Subscription', shirt_size=shirt_size)
 
         self.login_as_staff_user()
-        self.response = self.client.get('/camisetas/')
+        self.response = self.client.get('/quantidade-camisetas/')
 
     def test_template(self):
-        self.assertTemplateUsed(self.response, 'shirt_sizes.html')
+        self.assertTemplateUsed(self.response, 'count.html')
 
     def test_get(self):
         self.assertEqual(200, self.response.status_code)
 
     def test_staff_member_required(self):
         self.client.logout()
-        self.response = self.client.get('/camisetas/')
+        self.response = self.client.get('/quantidade-camisetas/')
         self.assertEqual(302, self.response.status_code)
 
     def test_html(self):
