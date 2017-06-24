@@ -1,11 +1,11 @@
 from collections import Counter
 
-from subscriptions.core.models import Subscription
-
 from django.contrib.auth.models import User
 from django.test import TestCase
-
 from model_mommy import mommy
+
+from subscriptions.core.models import Subscription
+
 
 class GetModelitiesCountTest(TestCase):
     def setUp(self):

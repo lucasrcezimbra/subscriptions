@@ -1,13 +1,16 @@
 import os
 from datetime import date
+
 from django.test import TestCase
+from model_mommy import mommy
+
 from subscriptions.core.models import Import, Subscription
 from subscriptions.core.validators import validate_file
 
-from model_mommy import mommy
 
 FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
+
 
 class ImportModelTest(TestCase):
     fixtures = ['columns.json', 'modalities.json', 'shirt_sizes.json']

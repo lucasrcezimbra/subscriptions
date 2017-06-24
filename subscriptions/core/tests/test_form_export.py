@@ -1,6 +1,8 @@
 from django.test import TestCase
+
 from subscriptions.core.forms import ExportForm
 from subscriptions.core.models import Subscription
+
 
 class ExportFormTest(TestCase):
     def setUp(self):

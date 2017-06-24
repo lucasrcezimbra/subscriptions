@@ -1,12 +1,12 @@
 import os
 
-from subscriptions.core.models import Import, Subscription
-
 from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
 from django.test import TestCase
-
 from model_mommy import mommy
+
+from subscriptions.core.models import Import, Subscription
+
 
 FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')

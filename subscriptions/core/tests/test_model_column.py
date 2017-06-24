@@ -1,8 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from model_mommy import mommy
+
 from subscriptions.core.models import Column
 
-from model_mommy import mommy
 
 class ColumnTest(TestCase):
     def setUp(self):

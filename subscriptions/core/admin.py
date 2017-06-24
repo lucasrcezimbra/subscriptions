@@ -1,6 +1,6 @@
 from django.contrib import admin
-from subscriptions.core.models import Column, Import, Modality, ShirtSize,\
-                                      Subscription
+
+from subscriptions.core.models import Column, Import, Modality, ShirtSize, Subscription
 
 class SubscriptionModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'gender', 'date_of_birth','city', 'team', 'shirt_size', 'modality', 'import_')

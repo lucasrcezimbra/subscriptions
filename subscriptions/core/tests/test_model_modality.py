@@ -1,9 +1,9 @@
-from subscriptions.core.models import Modality
-
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-
 from model_mommy import mommy
+
+from subscriptions.core.models import Modality
+
 
 class ModalityModelTest(TestCase):
     def setUp(self):

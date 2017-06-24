@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+
 from subscriptions.core.forms import ExportForm
+
 
 class GetExportTest(TestCase):
     def setUp(self):

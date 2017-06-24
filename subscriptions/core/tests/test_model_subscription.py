@@ -1,8 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from model_mommy import mommy
+
 from subscriptions.core.models import ShirtSize, Subscription
 
-from model_mommy import mommy
 
 class SubscriptionTest(TestCase):
     def setUp(self):

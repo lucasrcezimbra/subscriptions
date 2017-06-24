@@ -1,10 +1,11 @@
 import os
-import pandas as pd
-
 from datetime import datetime
 
+import pandas as pd
 from django.db import models
+
 from subscriptions.core.validators import validate_file
+
 
 SHIRT_SIZES = (
     ('BL', 'Baby Look'),

@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.db.models.deletion import ProtectedError
 from django.test import TestCase
-from subscriptions.core.models import ShirtSize, Subscription
-from unittest import skip
-
 from model_mommy import mommy
+
+from subscriptions.core.models import ShirtSize, Subscription
+
 
 class ShirtSizeModelTest(TestCase):
     def setUp(self):

@@ -1,11 +1,11 @@
+from unittest.mock import Mock
+
 from django.contrib import admin
 from django.test import TestCase
-from subscriptions.core.admin import ColumnModelAdmin, ImportModelAdmin,\
-                                     ModalityModelAdmin, ShirtSizeModelAdmin,\
-                                     SubscriptionModelAdmin
-from subscriptions.core.models import Column, Import, Modality, ShirtSize,\
-                                      Subscription
-from unittest.mock import Mock
+
+from subscriptions.core.admin import *
+from subscriptions.core.models import Column, Import, Modality, ShirtSize, Subscription
+
 
 class SubscriptionModelAdminTest(TestCase):
     def setUp(self):

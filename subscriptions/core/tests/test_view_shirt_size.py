@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-
 from model_mommy import mommy
+
 
 class GetShirtSizesCountTest(TestCase):
     def setUp(self):
