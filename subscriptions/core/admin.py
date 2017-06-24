@@ -13,7 +13,7 @@ class ImportModelAdmin(admin.ModelAdmin):
     list_display = ('pk','origin',)
 
 class ColumnModelAdmin(admin.ModelAdmin):
-    list_display = ('subscription_name', 'file_name',)
+    list_display = ('subscription_name', 'file_column',)
 
 class ShirtSizeModelAdmin(admin.ModelAdmin):
     list_display = ('shirt_size', 'file_shirt_size',)

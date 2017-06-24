@@ -92,7 +92,7 @@ class Import(models.Model):
         column_filter = self._columns.filter(
             subscription_name__exact=subscription_name
         )
-        return column_filter[0].file_name
+        return column_filter[0].file_column
 
     def _file_columns(self):
         columns = self._columns.exclude(subscription_name__exact='ignore')\
@@ -100,7 +100,7 @@ class Import(models.Model):
         return { column:self._file_column(column) for column in columns }
 
     def _create_subscriptions(self, dataset):
-        self._columns = Column.objects.filter(file_name__in=set(dataset.columns))
+        self._columns = Column.objects.filter(file_column__in=set(dataset.columns))
         records = dataset.to_dict('records')
         file_columns = self._file_columns()
         model_instances = [self._new_subscription(record, file_columns)
@@ -144,14 +144,14 @@ class Column(models.Model):
     )
 
     subscription_name = models.CharField('coluna', max_length=20, choices=COLUMNS)
-    file_name = models.CharField(max_length=100, primary_key=True)
+    file_column = models.CharField(max_length=100, primary_key=True)
 
     def save(self, *args, **kwargs):
         self.full_clean()
         super(Column, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.file_name)
+        return str(self.file_column)
 
 
 class ShirtSize(models.Model):

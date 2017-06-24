@@ -40,7 +40,7 @@ class ValidateFileTest(TestCase):
             self.invalid_column_import.full_clean()
 
     def test_error_columns_not_valid(self):
-        invalid_columns = ["*Nama Camplata", "Equipo"]
+        invalid_columns = set(["*Nama Camplata", "Equipo"])
         expected_message = ['Colunas {} invalidas'.format(invalid_columns)]
         expected_error = str({'file': expected_message })
 

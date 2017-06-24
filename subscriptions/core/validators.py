@@ -16,86 +16,73 @@ class FileValidator(object):
         self._save_file(value)
         extension = value.name.split('.')[-1]
         if extension == 'csv':
-            dataset = pd.read_csv(self.filepath, sep=';', keep_default_na=False)
+            self.dataset = pd.read_csv(self.filepath, sep=';', keep_default_na=False)
         elif extension in ('xlsx','xls'):
-            dataset = pd.read_excel(self.filepath, keep_default_na=False)
+            self.dataset = pd.read_excel(self.filepath, keep_default_na=False)
 
-        if 'Unnamed: 0' in dataset.columns:
-            del dataset['Unnamed: 0']
+        if 'Unnamed: 0' in self.dataset.columns:
+            del self.dataset['Unnamed: 0']
 
-        self._validate_columns(dataset)
-        self._validate_shirt_size(dataset)
-        self._validate_modalities(dataset)
+        self._validate_columns()
+        self._validate_shirt_size()
+        self._validate_modalities()
 
-    def _validate_columns(self, dataset):
-        message = 'Colunas %(invalid_columns)s invalidas'
-        valid_columns = subscriptions.core.models.\
-                Column.objects.filter(file_name__in=set(dataset.columns))\
-                .values_list('file_name', flat=True)
-        invalid_columns = self._invalid_items(dataset.columns, valid_columns)
+    def _validate_columns(self):
+        self.__validate_items(
+            'column',
+            subscriptions.core.models.Column.objects,
+            'Colunas %(invalid_columns)s invalidas',
+            self.dataset.columns,
+        )
 
-        if invalid_columns:
-            raise ValidationError(
-                message,
-                code='columns',
-                params={'invalid_columns': invalid_columns}
-            )
+    def _validate_shirt_size(self):
+        self.__validate_items(
+            'shirt_size',
+            subscriptions.core.models.ShirtSize.objects,
+            'Tamanhos de Camiseta %(invalid_columns)s invalidos',
+        )
 
-    def _invalid_items(self, items_for_test, valid_items):
-        return [item
-                for item in items_for_test
-                if item not in valid_items]
+    def _validate_modalities(self):
+        self.__validate_items(
+            'modality',
+            subscriptions.core.models.Modality.objects,
+            'Modalidades %(invalid_columns)s invalidas',
+        )
 
-    def _validate_shirt_size(self, dataset):
-        def file_shirt_sizes(dataset):
-            shirt_size_columns = subscriptions.core.models.\
-                    Column.objects.filter(subscription_name__exact='shirt_size').\
-                    values_list('file_name', flat=True)
-            columns_intersection = set(shirt_size_columns).intersection(dataset.columns)
+    def __validate_items(self, column, queryset, message, items=[]):
+        def get_invalid_items(column, queryset, items):
+            if not len(items):
+                items = get_items_from_column(column)
+            valid_items = get_valid_items(items, column, queryset)
+            return [item
+                    for item in items
+                    if item not in valid_items]
+
+        def get_valid_items(items, column, queryset):
+            filter = {
+                'file_{}__in'.format(column): set(items) #file_column__in=set(items)
+            }
+            return queryset.filter(**filter)\
+                           .values_list('file_{}'.format(column), flat=True)
+
+        def get_items_from_column(column):
+            column_possible_names = subscriptions.core.models.\
+                    Column.objects.filter(subscription_name__exact=column).\
+                    values_list('file_column', flat=True)
+            columns_intersection = set(column_possible_names).intersection(self.dataset.columns)
             if columns_intersection:
-                file_shirt_size_column = list(columns_intersection)[0]
-                return dataset[file_shirt_size_column]
+                column = list(columns_intersection)[0]
+                return self.dataset[column]
             else:
                 return []
 
-        message = 'Tamanhos de Camiseta %(invalid_shirt_sizes)s invalidos'
-        file_shirt_sizes = file_shirt_sizes(dataset)
-        valid_shirt_sizes = subscriptions.core.models.\
-                ShirtSize.objects.filter(file_shirt_size__in=set(file_shirt_sizes))\
-                .values_list('file_shirt_size', flat=True)
-        invalid_shirt_sizes = self._invalid_items(file_shirt_sizes, valid_shirt_sizes)
+        invalid_items = get_invalid_items(column, queryset, items)
 
-        if invalid_shirt_sizes:
+        if invalid_items:
             raise ValidationError(
                 message,
-                code='shirt_size',
-                params={'invalid_shirt_sizes': set(invalid_shirt_sizes)}
-            )
-
-    def _validate_modalities(self, dataset):
-        def file_modalities(dataset):
-            modality_columns = subscriptions.core.models.\
-                    Column.objects.filter(subscription_name__exact='modality').\
-                    values_list('file_name', flat=True)
-            columns_intersection = set(modality_columns).intersection(dataset.columns)
-            if columns_intersection:
-                file_modality_column = list(columns_intersection)[0]
-                return dataset[file_modality_column]
-            else:
-                return []
-
-        message = 'Modalidades %(invalid_modalities)s invalidas'
-        file_modalities = file_modalities(dataset)
-        valid_modalities = subscriptions.core.models.\
-                Modality.objects.filter(file_modality__in=set(file_modalities))\
-                .values_list('file_modality', flat=True)
-        invalid_modalities = self._invalid_items(file_modalities, valid_modalities)
-
-        if invalid_modalities:
-            raise ValidationError(
-                message,
-                code='modality',
-                params={'invalid_modalities': set(invalid_modalities)}
+                code=column,
+                params={'invalid_columns': set(invalid_items)}
             )
 
     def __eq__(self, other):

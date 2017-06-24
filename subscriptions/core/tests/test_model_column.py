@@ -20,4 +20,4 @@ class ColumnTest(TestCase):
         self.assertFalse(Column.objects.exists())
 
     def test_str(self):
-        self.assertEqual(self.column.file_name, str(self.column))
+        self.assertEqual(self.column.file_column, str(self.column))
