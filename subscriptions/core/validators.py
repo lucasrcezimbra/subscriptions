@@ -29,6 +29,16 @@ class FileValidator(object):
         self._validate_columns()
         self._validate_shirt_size()
         self._validate_modalities()
+        self._validate_subscriptions()
+
+    def _validate_subscriptions(self):
+        try:
+            subscriptions.core.models.\
+                    Import()._new_subscriptions(self.dataset)
+        except ValidationError as error:
+            raise ValidationError(
+                error.messages,
+            )
 
     def _validate_columns(self):
         self.__validate_items(

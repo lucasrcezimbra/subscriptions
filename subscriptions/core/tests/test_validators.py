@@ -14,6 +14,7 @@ INVALID_COLUMNS_CSV_PATH = os.path.join(FILES_PATH, 'columns_invalid.csv')
 INVALID_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'shirt_sizes_invalid.csv')
 WITHOUT_SHIRT_SIZES_CSV_PATH = os.path.join(FILES_PATH, 'without_shirt_size.csv')
 INVALID_MODALITIES_CSV_PATH = os.path.join(FILES_PATH, 'modalities_invalid.csv')
+INVALID_SUBSCRIPTIONS_CSV_PATH = os.path.join(FILES_PATH, 'subscription_invalid.csv')
 
 class ValidateFileTest(TestCase):
     fixtures = ['columns.json', 'modalities.json', 'shirt_sizes.json',]
@@ -36,6 +37,10 @@ class ValidateFileTest(TestCase):
         self.without_shirt_sizes_import = Import(
             origin='Sprint Final',
             file=WITHOUT_SHIRT_SIZES_CSV_PATH
+        )
+        self.invalid_subscription_import = Import(
+            origin='Sprint Final',
+            file=INVALID_SUBSCRIPTIONS_CSV_PATH
         )
 
     def test_columns_not_valid(self):
@@ -79,3 +84,11 @@ class ValidateFileTest(TestCase):
 
         with self.assertRaisesMessage(ValidationError, expected_error):
             self.invalid_modelities_import.full_clean()
+
+    def test_invalid_subscription(self):
+        expected_messages = [
+            "Informe um endereço de email válido."
+        ]
+        expected_error = str({'file': expected_messages })
+        with self.assertRaisesMessage(ValidationError, expected_error):
+            self.invalid_subscription_import.full_clean()

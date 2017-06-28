@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 import pandas as pd
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from subscriptions.core.validators import validate_file
@@ -101,13 +102,16 @@ class Import(models.Model):
         return { column:self._file_column(column) for column in columns }
 
     def _create_subscriptions(self, dataset):
+        instances = self._new_subscriptions(dataset)
+        Subscription.objects.bulk_create(instances)
+
+    def _new_subscriptions(self, dataset):
         self._columns = Column.objects.filter(file_column__in=set(dataset.columns))
         records = dataset.to_dict('records')
         file_columns = self._file_columns()
-        model_instances = [self._new_subscription(record, file_columns)
-                           for record in records]
-
-        Subscription.objects.bulk_create(model_instances)
+        instances = [self._new_subscription(record, file_columns)
+                     for record in records]
+        return instances
 
     def _new_subscription(self, record, file_columns):
         params = {column:record[file_columns[column]] for column in file_columns}
