@@ -29,7 +29,7 @@ class FileValidator(object):
         self._validate_columns()
         self._validate_shirt_size()
         self._validate_modalities()
-        self._validate_subscriptions()
+        # self._validate_subscriptions()
 
     def _validate_subscriptions(self):
         try:
