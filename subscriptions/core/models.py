@@ -39,6 +39,7 @@ MODALITIES = (
     ('I', 'Infantil'),
     ('J', 'Juvenil'),
     ('C', 'Caminhada'),
+    ('K', 'Kangoo'),
 )
 
 class Subscription(models.Model):
