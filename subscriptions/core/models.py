@@ -60,8 +60,9 @@ class Subscription(models.Model):
     modality = models.CharField('modalidade', max_length=2, choices=MODALITIES)
     shirt_size = models.CharField('tamanho da camiseta',
                                   max_length=5, choices=SHIRT_SIZES, blank=True)
-    import_t = models.ForeignKey('Import',
-                                 on_delete=models.CASCADE, null=True, blank=True)
+    import_t = models.ForeignKey('Import', on_delete=models.CASCADE,
+                                 null=True, blank=True)
+    paid = models.CharField('pago', max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -147,7 +148,8 @@ class Column(models.Model):
         ('team', 'team'),
         ('shirt_size', 'shirt_size'),
         ('modality', 'modality'),
-        ('ignore', 'ignore')
+        ('ignore', 'ignore'),
+        ('paid', 'paid')
     )
 
     subscription_name = models.CharField('coluna', max_length=20, choices=COLUMNS)

@@ -92,6 +92,7 @@ class ImportModelTest(TestCase):
             ('team', 'Sprint Final'),
             ('shirt_size', 'BL'),
             ('modality', '1'),
+            ('paid', 'Pendente'),
         )
         subscription = Subscription.objects.first()
         for field, expected in fields:

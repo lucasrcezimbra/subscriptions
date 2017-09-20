@@ -124,5 +124,12 @@
     "fields": {
         "subscription_name": "shirt_size"
     }
+},
+{
+    "model": "core.column",
+    "pk": "Pago",
+    "fields": {
+        "subscription_name": "paid"
+    }
 }
 ]

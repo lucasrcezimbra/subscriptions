@@ -14,7 +14,8 @@ class SubscriptionTest(TestCase):
         self.assertTrue(Subscription.objects.exists())
 
     def test_fields_can_be_blank(self):
-        fields_can_be_blank = ('email', 'name_for_bib_number', 'city', 'team')
+        fields_can_be_blank = ('email', 'name_for_bib_number', 'city', 'team',
+                               'paid',)
 
         for field_name in fields_can_be_blank:
             with self.subTest():
