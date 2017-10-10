@@ -21,8 +21,15 @@ class ExportFormTest(TestCase):
                          list(self.form.FORMATS))
 
     def test_fields(self):
+        aditional_fields = [
+            ('import_t__origin', 'origin'),
+        ]
+        exclude_fields = ['import_t', ]
         expected = [(field.name, field.verbose_name)
-                    for field in Subscription._meta.get_fields()]
+                    for field in Subscription._meta.get_fields()
+                    if field.name not in exclude_fields]
+        expected.append(*aditional_fields)
+
         self.assertEqual(expected, self.form.FIELDS)
 
     def test_fields_has_choices(self):
