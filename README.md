@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Lrcezimbra/subscriptions.svg?branch=master)](https://travis-ci.org/Lrcezimbra/subscriptions)
+[![Code Health](https://landscape.io/github/Lrcezimbra/subscriptions/master/landscape.svg?style=flat)](https://landscape.io/github/Lrcezimbra/subscriptions/master)
 [![Updates](https://pyup.io/repos/github/Lrcezimbra/subscriptions/shield.svg)](https://pyup.io/repos/github/Lrcezimbra/subscriptions/)
 [![Python 3](https://pyup.io/repos/github/Lrcezimbra/subscriptions/python-3-shield.svg)](https://pyup.io/repos/github/Lrcezimbra/subscriptions/)
 [![Coverage Status](https://coveralls.io/repos/github/Lrcezimbra/subscriptions/badge.svg?branch=master)](https://coveralls.io/github/Lrcezimbra/subscriptions?branch=master)
