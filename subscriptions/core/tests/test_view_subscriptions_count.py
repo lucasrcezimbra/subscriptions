@@ -1,4 +1,6 @@
 import os
+from collections import namedtuple
+from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
@@ -11,10 +13,17 @@ from subscriptions.core.models import Import, Subscription
 FILES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files')
 CSV_PATH = os.path.join(FILES_PATH, 'test.csv')
 
+
 class GetSubscriptionsCountTest(TestCase):
     fixtures = ['columns.json', 'modalities.json', 'shirt_sizes.json']
 
-    def setUp(self):
+    @patch('subscriptions.core.views.Sympla')
+    def setUp(self, SymplaMock):
+        SymplaMock._authenticate.return_value = None
+        Event = namedtuple('Event', ['confirmed_participants', 'pending_participants'])
+        self.event = Event(5, 10)
+        SymplaMock().get_event.return_value = self.event
+
         import_ = Import.objects.create(
             origin='Sprint Final',
             file=CSV_PATH
@@ -45,21 +54,34 @@ class GetSubscriptionsCountTest(TestCase):
         self.assertEqual(context, self.without_imports_quantity)
 
     def test_context_total(self):
-        expected_total = Subscription.objects.count()
+        sympla_count = self.event.confirmed_participants + self.event.pending_participants
+        expected_total = Subscription.objects.count() + sympla_count
         total = self.response.context['total']
         self.assertEqual(total, expected_total)
+
+    def test_context_sympla(self):
+        sympla = self.response.context['extra']
+        expected = {
+            'sympla confirmados': self.event.confirmed_participants,
+            'sympla pendentes': self.event.pending_participants,
+        }
+        self.assertEqual(sympla, expected)
 
     def test_html(self):
         expected_contents = (
             'Sprint Final: 5',
             'Avulso: {}'.format(self.without_imports_quantity),
-            'Total: 15',
+            'Total: 30',
+            'Sympla Confirmados: {}'.format(self.event.confirmed_participants),
+            'Sympla Pendentes: {}'.format(self.event.pending_participants),
         )
         for expected in expected_contents:
             with self.subTest():
                 self.assertContains(self.response, expected)
 
-    def test_html_if_dont_have_without_import(self):
+    @patch('subscriptions.core.views.Sympla')
+    def test_html_if_dont_have_without_import(self, SymplaMock):
+        SymplaMock._authenticate.return_value = None
         Subscription.objects.all().delete()
         self.response = self.client.get('/quantidade-inscritos/')
         self.assertNotContains(self.response, 'Avulso: 0')

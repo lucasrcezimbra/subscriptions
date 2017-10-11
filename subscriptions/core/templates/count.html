@@ -9,9 +9,14 @@
     {% for name,count in counter %}
     <li>{{ name }}: {{ count }}</li>
     {% endfor %}
+
     {% if alone %}
     <li>Avulso: {{ alone }}</li>
     {% endif %}
+
+    {% for name,count in extra.items %}
+    <li>{{ name|title }}: {{ count }}</li>
+    {% endfor %}
     <li><strong>Total: {{ total }}</strong></li>
   </ul>
 </body>
