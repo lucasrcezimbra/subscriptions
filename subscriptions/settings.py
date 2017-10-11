@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'subscriptions.wsgi.application'
 
 default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {
-    'default':config('DATABASE_URL', default=default_dburl, cast=dburl),
+    'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
 }
 
 
@@ -124,3 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+SYMPLA_USER = config('SYMPLA_USER')
+SYMPLA_PASSWORD = config('SYMPLA_PASSWORD')
+SYMPLA_EVENT_ID = config('SYMPLA_EVENT_ID')
