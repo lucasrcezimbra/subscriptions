@@ -71,8 +71,8 @@ def count_subscriptions(request):
     event = sympla.get_event(settings.SYMPLA_EVENT_ID)
 
     extra = {
-        'sympla confirmados': event.confirmed_participants,
-        'sympla pendentes': event.pending_participants,
+        'sympla confirmados': int(event.confirmed_participants),
+        'sympla pendentes': int(event.pending_participants),
     }
     context = __get_subscription_counter_context(
         count='import_t',
