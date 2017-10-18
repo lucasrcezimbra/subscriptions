@@ -21,7 +21,7 @@ class GetSubscriptionsCountTest(TestCase):
     def setUp(self, SymplaMock):
         SymplaMock._authenticate.return_value = None
         Event = namedtuple('Event', ['confirmed_participants', 'pending_participants'])
-        self.event = Event(5, 10)
+        self.event = Event('5', '10')
         SymplaMock().get_event.return_value = self.event
 
         import_ = Import.objects.create(
@@ -54,7 +54,7 @@ class GetSubscriptionsCountTest(TestCase):
         self.assertEqual(context, self.without_imports_quantity)
 
     def test_context_total(self):
-        sympla_count = self.event.confirmed_participants + self.event.pending_participants
+        sympla_count = int(self.event.confirmed_participants) + int(self.event.pending_participants)
         expected_total = Subscription.objects.count() + sympla_count
         total = self.response.context['total']
         self.assertEqual(total, expected_total)
@@ -62,8 +62,8 @@ class GetSubscriptionsCountTest(TestCase):
     def test_context_sympla(self):
         sympla = self.response.context['extra']
         expected = {
-            'sympla confirmados': self.event.confirmed_participants,
-            'sympla pendentes': self.event.pending_participants,
+            'sympla confirmados': int(self.event.confirmed_participants),
+            'sympla pendentes': int(self.event.pending_participants),
         }
         self.assertEqual(sympla, expected)
 
