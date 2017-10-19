@@ -16,13 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from subscriptions.core.views import export, count_shirt_sizes, count_subscriptions, count_modality
+from subscriptions.core.views import export, count_shirt_sizes, count_subscriptions, count_modality, count_teams_cities
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^export/', export),
-    url(r'^quantidade-camisetas/', count_shirt_sizes),
-    url(r'^quantidade-inscritos/', count_subscriptions),
-    url(r'^quantidade-modalidades/', count_modality),
+    url(r'^quantidade-camisetas/$', count_shirt_sizes),
+    url(r'^quantidade-inscritos/$', count_subscriptions),
+    url(r'^quantidade-modalidades/$', count_modality),
+    url(r'^cidades-equipes/$', count_teams_cities),
 ]

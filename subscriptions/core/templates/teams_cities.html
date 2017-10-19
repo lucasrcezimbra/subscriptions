@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    table {
+      float: left;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <th>Cidades</th>
+      <th>Qtde.</th>
+    </tr>
+    {% for city, count in cities %}
+    <tr>
+      <td>{{ city }}</td>
+      <td>{{ count }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <table>
+    <tr>
+      <th>Equipes</th>
+      <th>Qtde.</th>
+    </tr>
+    {% for team, count in teams %}
+    <tr>
+      <td>{{ team }}</td>
+      <td>{{ count }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>

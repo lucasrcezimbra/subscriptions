@@ -90,6 +90,22 @@ def count_modality(request):
     return render(request, 'count.html', context)
 
 
+@staff_member_required
+def count_teams_cities(request):
+    teams = Subscription.objects.order_by('-team')\
+                                .values_list('team')\
+                                .annotate(count=Count('team'))
+    cities = Subscription.objects.order_by('-city')\
+                                 .values_list('city')\
+                                 .annotate(count=Count('city'))
+
+    context = {
+        'teams': teams,
+        'cities': cities,
+    }
+    return render(request, 'teams_cities.html', context)
+
+
 def __get_subscription_counter_context(count, value='', alone=0, extra={}, queryset=Subscription.objects):
     value = value if value else count
     counter = queryset.values_list(value).annotate(count=Count(count))
