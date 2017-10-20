@@ -75,8 +75,7 @@ def count_subscriptions(request):
         'sympla pendentes': int(event.pending_participants),
     }
     context = __get_subscription_counter_context(
-        count='import_t',
-        value='import_t__origin',
+        field='import_t__origin',
         queryset=Subscription.objects.filter(import_t__gt=0),
         alone=Subscription.objects.filter(import_t__exact=None).count(),
         extra=extra,
@@ -93,15 +92,14 @@ def count_modality(request):
 @staff_member_required
 def count_teams_cities(request):
     context = {
-        'teams': Subscription.objects.ordered_count('team'),
-        'cities': Subscription.objects.ordered_count('city'),
+        'teams': Subscription.objects.values_list_count_ordered('team'),
+        'cities': Subscription.objects.values_list_count_ordered('city'),
     }
     return render(request, 'teams_cities.html', context)
 
 
-def __get_subscription_counter_context(count, value='', alone=0, extra={}, queryset=Subscription.objects):
-    value = value if value else count
-    counter = queryset.values_list(value).annotate(count=Count(count))
+def __get_subscription_counter_context(field, alone=0, extra={}, queryset=Subscription.objects):
+    counter = queryset.values_list_count(field)
     extra_total = sum(extra.values())
     total = sum([count for _, count in counter]) + alone + extra_total
     return {
