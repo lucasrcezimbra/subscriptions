@@ -92,12 +92,12 @@ def count_modality(request):
 
 @staff_member_required
 def count_teams_cities(request):
-    teams = Subscription.objects.order_by('-team')\
-                                .values_list('team')\
-                                .annotate(count=Count('team'))
-    cities = Subscription.objects.order_by('-city')\
-                                 .values_list('city')\
-                                 .annotate(count=Count('city'))
+    teams = Subscription.objects.values_list('team')\
+                                .annotate(count=Count('team'))\
+                                .order_by('-count')
+    cities = Subscription.objects.values_list('city')\
+                                 .annotate(count=Count('city'))\
+                                 .order_by('-count')
 
     context = {
         'teams': teams,

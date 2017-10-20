@@ -26,25 +26,35 @@ class GetTeamCitisTest(TestCase):
         self.assertIsInstance(teams, QuerySet)
         self.assertIsInstance(cities, QuerySet)
 
-        expected_team = ('Sprint Final', 4)
-        expected_city = ('Porto Alegre', 4)
+        expected_team = ('Sprint Final', 3)
+        expected_city = ('Canoas', 2)
         self.assertEqual(teams[0], expected_team)
         self.assertEqual(cities[0], expected_city)
 
     def test_html(self):
         expected_contents = (
-            'Cidades',
-            'Equipes',
-            'Porto Alegre',
-            '4',
-            'Canoas',
-            '1',
-            'Sprint Final',
-            'Equipen',
+            ('Cidades', 1),
+            ('Equipes', 1),
+            ('Porto Alegre', 1),
+            ('3', 1),
+            ('Canoas', 1),
+            ('2', 2),
+            ('Sprint Final', 1),
+            ('Equipen', 1)
         )
-        for expected in expected_contents:
+        for expected, count in expected_contents:
             with self.subTest():
-                self.assertContains(self.response, expected)
+                self.assertContains(self.response, expected, count)
+
+    def test_cities_must_be_ordered(self):
+        cities = self.response.context['cities']
+        sorted_cities = sorted(cities, key=lambda d: d[1], reverse=True)
+        self.assertEqual(list(cities), sorted_cities)
+
+    def test_teams_must_be_ordered(self):
+        teams = self.response.context['teams']
+        sorted_teams = sorted(teams, key=lambda d: d[1], reverse=True)
+        self.assertEqual(list(teams), sorted_teams)
 
     def login_as_staff_user(self):
         self.credentials = dict(username='admin', password='password')
