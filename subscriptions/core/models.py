@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from subscriptions.core.validators import validate_file
+from subscriptions.core.managers import SubscriptionQuerySet
 
 
 SHIRT_SIZES = (
@@ -63,6 +64,8 @@ class Subscription(models.Model):
     import_t = models.ForeignKey('Import', on_delete=models.CASCADE,
                                  null=True, blank=True)
     paid = models.CharField('pago', max_length=100, blank=True, null=True)
+
+    objects = SubscriptionQuerySet.as_manager()
 
     def save(self, *args, **kwargs):
         self.full_clean()
