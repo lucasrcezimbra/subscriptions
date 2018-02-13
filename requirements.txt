@@ -2,7 +2,7 @@ Django==1.11.7
 dj-database-url==0.4.2
 dj-static==0.0.6
 django-extensions==1.9.9
-django-import-export==0.6.1
+django-import-export==1.0.0
 django-suit==0.2.25
 django-test-without-migrations==0.6
 gunicorn==19.7.1
