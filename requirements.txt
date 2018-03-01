@@ -1,5 +1,5 @@
 Django==1.11.7
-dj-database-url==0.4.2
+dj-database-url==0.5.0
 dj-static==0.0.6
 django-extensions==1.9.9
 django-import-export==0.6.1
